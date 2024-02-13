@@ -1,4 +1,7 @@
 using FemmployeeMod;
+using LethalLib;
+using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using static IngamePlayerSettings;
 
@@ -17,7 +20,18 @@ namespace ModelReplacement
 
         protected override void Start()
         {
-            settings = gameObject.AddComponent<FemmployeeSettings>();
+
+            if (StartOfRound.Instance.IsServer)
+            {
+                var settingsObject = Instantiate(FemmployeeModBase.settingsPrefab);
+                settingsObject.GetComponent<NetworkObject>().Spawn();
+                settingsObject.GetComponent<FemmployeeSettings>().localSuit.Value = this;
+            }
+
+            settings = FindObjectsOfType<FemmployeeSettings>().First(setting => setting.localSuit.Value == this);
+            settings.transform.SetParent(transform, false);
+
+            settings = replacementModel.GetComponent<FemmployeeSettings>();
             settings.controller = controller;
             if (settings.controller != GameNetworkManager.Instance.localPlayerController) { return; }
             settings.replacementModel = replacementModel;
@@ -25,7 +39,7 @@ namespace ModelReplacement
             meshRenderer = settings.replacementModel.GetComponentInChildren<SkinnedMeshRenderer>();
             localModdedUI = FindObjectOfType<FemmployeeConfigUI>();
             localModdedUI.localSettings = settings;
-            localModdedUI.localSettings.localSuit = this;
+            localModdedUI.localSettings.localSuit.Value = this;
             
 
 

@@ -7,6 +7,8 @@ using System;
 using LethalCompanyInputUtils.Api;
 using UnityEngine.InputSystem;
 using BepInEx.Logging;
+using Unity.Netcode;
+using FemmployeeMod;
 
 namespace ModelReplacement
 {
@@ -21,6 +23,8 @@ namespace ModelReplacement
         public static ManualLogSource mls;
 
         public static ConfigFile config;
+
+        public static GameObject settingsPrefab;
 
         // Example Config for single model mod
         public static ConfigEntry<bool> enableModelForAllSuits { get; private set; }
@@ -53,6 +57,8 @@ namespace ModelReplacement
                 }
             }
 
+            settingsPrefab = LethalLib.Modules.NetworkPrefabs.CreateNetworkPrefab("FemmployeeSettings");
+            settingsPrefab.AddComponent<FemmployeeSettings>();
 
             Assets.PopulateAssets();
             ModelReplacementAPI.RegisterSuitModelReplacement("Femmployee", typeof(Femmployee));

@@ -15,7 +15,7 @@ namespace FemmployeeMod
 
         public GameObject replacementModel = null;
 
-        public Femmployee localSuit;
+        public NetworkVariable<Femmployee> localSuit;
 
         public string suitName { get; set; } = "";
 
@@ -49,8 +49,8 @@ namespace FemmployeeMod
         public void ApplySettingsClientRpc()
         {
             FemmployeeModBase.mls.LogWarning("we made it! ServerRPC!");
-            localSuit.meshRenderer.SetBlendShapeWeight(0, breastSize);
-            localSuit.meshRenderer.SetBlendShapeWeight(1, bulgeSize);
+            localSuit.Value.meshRenderer.SetBlendShapeWeight(0, breastSize);
+            localSuit.Value.meshRenderer.SetBlendShapeWeight(1, bulgeSize);
         }
     }
 }
