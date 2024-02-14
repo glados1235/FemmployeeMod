@@ -5,6 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 using static IngamePlayerSettings;
 
+
 namespace ModelReplacement
 {
     public class Femmployee : BodyReplacementBase 
@@ -18,34 +19,52 @@ namespace ModelReplacement
             return Assets.MainAssetBundle.LoadAsset<GameObject>(model_name);
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            if (StartOfRound.Instance.IsServer)
+            {
+                GameObject settingsObject = Instantiate(FemmployeeModBase.settingsPrefab);
+                settings = settingsObject.GetComponent<FemmployeeSettings>();
+                settingsObject.GetComponent<NetworkObject>().Spawn();
+            }
+        }
+
         protected override void Start()
         {
 
-            if (StartOfRound.Instance.IsServer)
-            {
-                var settingsObject = Instantiate(FemmployeeModBase.settingsPrefab);
-                settingsObject.GetComponent<NetworkObject>().Spawn();
-                settingsObject.GetComponent<FemmployeeSettings>().localSuit.Value = this;
-            }
+            settings.controller = controller;
 
-            settings = FindObjectsOfType<FemmployeeSettings>().First(setting => setting.localSuit.Value == this);
+            if (settings.controller != GameNetworkManager.Instance.localPlayerController) { return; }
+
             settings.transform.SetParent(transform, false);
 
-            settings = replacementModel.GetComponent<FemmployeeSettings>();
-            settings.controller = controller;
-            if (settings.controller != GameNetworkManager.Instance.localPlayerController) { return; }
             settings.replacementModel = replacementModel;
+
             settings.suitName = suitName;
+
             meshRenderer = settings.replacementModel.GetComponentInChildren<SkinnedMeshRenderer>();
-            localModdedUI = FindObjectOfType<FemmployeeConfigUI>();
-            localModdedUI.localSettings = settings;
-            localModdedUI.localSettings.localSuit.Value = this;
             
+            settings.BodyMeshRenderer = meshRenderer;
+
+            settings.cosmeticParts = replacementModel.GetComponentsInChildren<CosmeticPart>();
+
+            localModdedUI = FindObjectOfType<FemmployeeConfigUI>();
+
+            localModdedUI.localSettings = settings;
+
+            FemmployeeModBase.mls.LogWarning($"The suit {settings.suitName} has been put on by player {settings.controller.actualClientId} and the suit model is {settings.replacementModel} and the localModdedUI is {localModdedUI}");
 
 
-            FemmployeeModBase.mls.LogError($"The suit {settings.suitName} has been put on by player {settings.controller.actualClientId} and the suit model is {settings.replacementModel} and the localModdedUI is {localModdedUI}");
+
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            Destroy(settings.gameObject);
+
+        }
 
     }
 }

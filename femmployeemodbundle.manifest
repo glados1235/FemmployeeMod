@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3304775589
+CRC: 1869479923
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9554deb354f0b7de01ec576d8b1b45bc
+    Hash: ff3239b69cf4dc54a751ca6e473ac8a6
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e66c8c05ae2c1246c54d23ee2aa5931f
+    Hash: 689eb7d854ee15d836f0eccfdbebe28c
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 9554deb354f0b7de01ec576d8b1b45bc
+    Hash: ff3239b69cf4dc54a751ca6e473ac8a6
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -47,11 +47,17 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+- Class: 114
   Script: {fileID: -968822544, guid: b62a8ee8f4944704092e325ff9d2dc02, type: 3}
+- Class: 114
+  Script: {fileID: -1491426481, guid: b62a8ee8f4944704092e325ff9d2dc02, type: 3}
 - Class: 114
   Script: {fileID: 752590947, guid: b62a8ee8f4944704092e325ff9d2dc02, type: 3}
 - Class: 114
@@ -60,6 +66,10 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 008ad30e5afb3544982e42aeba321a6d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
 - Class: 114
@@ -108,7 +118,13 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.VertexGradient
 - AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.ArgumentCache
+- AssemblyName: UnityEngine.CoreModule
   ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentListenerMode
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.RectOffset
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
   ClassName: UnityEngine.TextCore.FaceInfo
 - AssemblyName: UnityEngine.TextCoreFontEngineModule
@@ -128,20 +144,33 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.Navigation
 - AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
+- AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.Slider/SliderEvent
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0002_helmet-outline.png
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0003_torso-outline.png
 - Assets/ModdedUI/FemmployeeSuitPreviewPrefab/playerPreviewController.controller
 - Assets/ModelReplacementSDK/AssetsToBuild/Femmployee.prefab
 - Assets/ModdedUI/New Material.mat
 - Assets/ModelReplacementSDK/AssetsToBuild/Femmployee Hazmat.prefab
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0000_cog.png
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0006_legs-outline.png
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0007_far-arm.png
 - Assets/ModdedUI/FemmployeeSuitPreviewPrefab/Quota Dance.anim
 - Assets/ModdedUI/Perfect DOS VGA 437.ttf
+- Assets/ModdedUI/RTMat.mat
 - Assets/ModdedUI/UIFoldoutClosed.png
 - Assets/ModdedUI/ModdedUI.prefab
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0004_arm-outline.png
 - Assets/ModdedUI/Perfect DOS VGA 437 SDF.asset
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0005_waist-outline.png
 - Assets/ModdedUI/PlayerPreviewRT.renderTexture
+- Assets/ModdedUI/UIElements/ega.png
+- Assets/ModdedUI/UIElements/export202402131804098592.psd_0001_slider-outline.png
 - Assets/ModdedUI/E5 5.png
+- Assets/SettingsObject/SettingsObject.prefab
 - Assets/ModdedUI/FemmployeeSuitPreviewPrefab/FemmployeeSuitPreviewPrefab.prefab
 Dependencies: []

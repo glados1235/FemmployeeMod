@@ -11,15 +11,15 @@ namespace FemmployeeMod
 {
     public class FemmployeeSettings : NetworkBehaviour
     {
-        public PlayerControllerB controller = null;
+        public PlayerControllerB controller;
 
-        public GameObject replacementModel = null;
+        public GameObject replacementModel;
 
-        public NetworkVariable<Femmployee> localSuit;
+        public SkinnedMeshRenderer BodyMeshRenderer;
+
+        public CosmeticPart[] cosmeticParts;
 
         public string suitName { get; set; } = "";
-
-        public bool isBeingEdited;
 
         public float bulgeSize;
 
@@ -29,28 +29,23 @@ namespace FemmployeeMod
 
         public void ApplySettings()
         {
-            if (isBeingEdited)
-            {
-                if (IsServer) { ApplySettingsClientRpc(); FemmployeeModBase.mls.LogWarning("ApplySettings called on the server!"); }
-                else { ApplySettingsServerRpc(); FemmployeeModBase.mls.LogWarning("ApplySettings called on the Client!"); }
-            }
-            
+            if (IsServer) { ApplySettingsClientRpc(); }
+            else { ApplySettingsServerRpc(); }
         }
 
 
         [ServerRpc(RequireOwnership = false)]
         public void ApplySettingsServerRpc()
         {
-            FemmployeeModBase.mls.LogWarning("we made it! ClientRPC!");
             ApplySettingsClientRpc();
         }
 
         [ClientRpc]
         public void ApplySettingsClientRpc()
         {
-            FemmployeeModBase.mls.LogWarning("we made it! ServerRPC!");
-            localSuit.Value.meshRenderer.SetBlendShapeWeight(0, breastSize);
-            localSuit.Value.meshRenderer.SetBlendShapeWeight(1, bulgeSize);
+            BodyMeshRenderer.SetBlendShapeWeight(0, breastSize);
+            BodyMeshRenderer.SetBlendShapeWeight(1, bulgeSize);
+            Tools.LogAll(this);
         }
     }
 }

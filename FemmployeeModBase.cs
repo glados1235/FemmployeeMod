@@ -57,8 +57,6 @@ namespace ModelReplacement
                 }
             }
 
-            settingsPrefab = LethalLib.Modules.NetworkPrefabs.CreateNetworkPrefab("FemmployeeSettings");
-            settingsPrefab.AddComponent<FemmployeeSettings>();
 
             Assets.PopulateAssets();
             ModelReplacementAPI.RegisterSuitModelReplacement("Femmployee", typeof(Femmployee));
@@ -66,6 +64,10 @@ namespace ModelReplacement
             harmony.PatchAll();
             Logger.LogInfo($"Plugin {"com.TiltedHat.FemmployeeMod"} is loaded!");
             mls = Logger;
+
+
+            settingsPrefab = (GameObject)Assets.MainAssetBundle.LoadAsset("Assets/SettingsObject/SettingsObject.prefab");
+            LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(settingsPrefab);
         }
     }
     public static class Assets
@@ -85,6 +87,8 @@ namespace ModelReplacement
                 }
 
             }
+
+
         }
     }
 
