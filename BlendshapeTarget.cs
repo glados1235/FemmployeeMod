@@ -8,7 +8,6 @@ namespace FemmployeeMod
 
     public class BlendshapeTarget : MonoBehaviour
     {
-        public Region region;
         public int shapeID;
         public float sliderValue;
     }

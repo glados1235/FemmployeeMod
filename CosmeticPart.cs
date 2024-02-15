@@ -5,17 +5,18 @@ using UnityEngine;
 
 namespace FemmployeeMod
 {
-    public enum Region
-    {
-        head,
-        chest,
-        arms,
-        waist,
-        legs
-    }
+
 
     public class CosmeticPart : MonoBehaviour
     {
+        public enum Region
+        {
+            head,
+            chest,
+            arms,
+            waist,
+            legs
+        }
         public string CosmeticName { get; set; } = "";
         public int cosmeticID;
         public Region region;
@@ -27,7 +28,6 @@ namespace FemmployeeMod
         {
             name = gameObject.name;
             skinnedMeshRenderer = gameObject.GetComponent<SkinnedMeshRenderer>();
-            foreach (var b in BlendshapeTargets) { b.region = region; }
         }
     }
 }
