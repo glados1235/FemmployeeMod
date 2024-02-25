@@ -1,21 +1,17 @@
 ﻿using ModelReplacement;
 using UnityEngine.InputSystem;
 using UnityEngine;
-using UnityEngine.UI;
-using Unity.Netcode;
+using TMPro;
 using static IngamePlayerSettings;
 
 namespace FemmployeeMod
 {
     public class FemmployeeConfigUI : MonoBehaviour
     {
-        public FemmployeeSettings localSettings;
         public GameObject blendshapeListGo;
-        public GameObject[] regionDropdowns;
-        public Slider breastSlider;
-        public Slider bulgeSlider;
+        public GameObject localFemmployeeGo;
+        public TMP_Dropdown[] regionDropdowns;
         public bool isUIOpen;
-
         public FemmployeeSuitPreview femmployeeSuitPreview; 
         public GameObject menu;
 
@@ -32,60 +28,64 @@ namespace FemmployeeMod
                 GameObject femmployeeSuitPreviewObject = (GameObject)Instantiate(Assets.MainAssetBundle.LoadAsset("Assets/ModdedUI/FemmployeeSuitPreviewPrefab/FemmployeeSuitPreviewPrefab.prefab"), new Vector3(400, -100, 400), Quaternion.identity);
                 femmployeeSuitPreview = femmployeeSuitPreviewObject.GetComponent<FemmployeeSuitPreview>();
             }
+
         }
 
-        public void SetupKeybindCallbacks()
+        public void PopulateDropdowns()
+        {
+            foreach(TMP_Dropdown dropdown in regionDropdowns)
+            {
+                dropdown.ClearOptions();
+            }
+
+            foreach (var mesh in femmployeeSuitPreview.settings.headRegionParts)
+            {
+                regionDropdowns[0].options.Add(new TMP_Dropdown.OptionData(mesh.name));
+            }
+
+            foreach (var mesh in femmployeeSuitPreview.settings.chestRegionParts)
+            {
+                regionDropdowns[1].options.Add(new TMP_Dropdown.OptionData(mesh.name));
+            }
+
+            foreach (var mesh in femmployeeSuitPreview.settings.armsRegionParts)
+            {
+                regionDropdowns[2].options.Add(new TMP_Dropdown.OptionData(mesh.name));
+            }
+
+            foreach (var mesh in femmployeeSuitPreview.settings.waistRegionParts)
+            {
+                regionDropdowns[3].options.Add(new TMP_Dropdown.OptionData(mesh.name));
+            }
+
+            foreach (var mesh in femmployeeSuitPreview.settings.legsRegionParts)
+            {
+                regionDropdowns[4].options.Add(new TMP_Dropdown.OptionData(mesh.name));
+            }
+        }
+    
+        public void SetupKeybindCallbacks() 
         {
             FemmployeeModBase.InputActionsInstance.FemmployeeUIToggle.performed += FemmployeeUIToggle;
         }
 
-        public void FemmployeeUIToggle(InputAction.CallbackContext explodeConext)
+        public void FemmployeeUIToggle(InputAction.CallbackContext UIOpenContext)
         {
-            if (!explodeConext.performed) return;
+            if (!UIOpenContext.performed) return;
             isUIOpen = !isUIOpen;
             menu.SetActive(isUIOpen);
-            Cursor.lockState = isUIOpen ? CursorLockMode.Confined : CursorLockMode.Locked;
+            Cursor.lockState = isUIOpen ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = isUIOpen;
-            localSettings.controller.disableLookInput = isUIOpen;
+            GameNetworkManager.Instance.localPlayerController.disableLookInput = isUIOpen;
             femmployeeSuitPreview.isBeingEdited = isUIOpen;
         }
 
         public void ApplyChanges()
         {
-            if (localSettings == null) return;
-            localSettings.ApplySettings();
-            Tools.LogAll(this);
-            FemmployeeModBase.mls.LogWarning(breastSlider.value);
-            FemmployeeModBase.mls.LogWarning(bulgeSlider.value);
+            FemmployeeSuitSync.instance.ApplySettings(localFemmployeeGo.GetComponent<Femmployee>());
         }
 
-        public void RotateModelLeftButton()
-        {
-            if (femmployeeSuitPreview != null)
-            {
-                femmployeeSuitPreview.RotatePreviewModel(100);
-            }
-        }
-        public void RotateModelRightButton()
-        {
-            if (femmployeeSuitPreview != null)
-            {
-                femmployeeSuitPreview.RotatePreviewModel(-100);
-            }
-        }
-
-        public void update()
-        {
-            if (isUIOpen)
-            {
-                localSettings.breastSize = breastSlider.value;
-                localSettings.bulgeSize = bulgeSlider.value;
-                femmployeeSuitPreview.breastSize = breastSlider.value;
-                femmployeeSuitPreview.bulgeSize = bulgeSlider.value;
-            }
-        }
-
-        public void ButtonTask(ButtonWorker sender)
+        public void ButtonTask(FemmployeeUIWorker sender)
         {
             sender.targetElement.SetActive(!sender.targetElement.activeSelf);
             if (sender.shouldDisable)
@@ -97,9 +97,10 @@ namespace FemmployeeMod
             }
         }
 
-        public void UpdateBlendshapeSliderList()
+        public void DropdownSelection(FemmployeeUIWorker sender, int selectionIndex) 
         {
-
+            femmployeeSuitPreview.SetPreviewRegion(sender.objectID, selectionIndex);
+            FemmployeeModBase.mls.LogWarning($"{sender.objectID} {selectionIndex}");
         }
 
     }

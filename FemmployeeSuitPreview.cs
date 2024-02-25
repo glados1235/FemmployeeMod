@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 namespace FemmployeeMod
 {
@@ -6,35 +7,34 @@ namespace FemmployeeMod
     {
         public Camera modelViewCamera;
         public GameObject previewModel;
-        private float modelRotationValue;
-
-
-        public SkinnedMeshRenderer BodyMeshRenderer;
+        public FemmployeeSettings settings;
 
         public bool isBeingEdited;
 
-        public float bulgeSize;
 
-        public float breastSize;
-
-        public void Update()
+        public void SetPreviewRegion(int dropdownID, int selectionIndex)
         {
-            if (isBeingEdited)
+            if(dropdownID == 0)
             {
-                BodyMeshRenderer.SetBlendShapeWeight(0, breastSize);
-                BodyMeshRenderer.SetBlendShapeWeight(1, bulgeSize);
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.headRegionParts[selectionIndex];
+            }
+            if(dropdownID == 1)
+            {
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.chestRegionParts[selectionIndex];
+            }
+            if (dropdownID == 2)
+            {
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.armsRegionParts[selectionIndex];
+            }
+            if(dropdownID == 3)
+            {
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.waistRegionParts[selectionIndex];
+            }
+            if(dropdownID == 4)
+            {
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.legsRegionParts[selectionIndex];
             }
         }
-
-        public void RotatePreviewModel(int turnDirection)
-        {
-            // Calculate the rotation angle based on the turn direction
-            float rotationAngle = Time.deltaTime * turnDirection;
-
-            // Apply the rotation around the Y axis
-            previewModel.transform.Rotate(0, rotationAngle, 0, Space.Self);
-        }
-
 
     }
 }

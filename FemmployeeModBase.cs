@@ -18,15 +18,12 @@ namespace ModelReplacement
     [BepInDependency("com.rune580.LethalCompanyInputUtils", BepInDependency.DependencyFlags.HardDependency)]
     public class FemmployeeModBase : BaseUnityPlugin
     {
+        public static FemmployeeModBase instance;
         internal static InputClass InputActionsInstance = new InputClass();
-
         public static ManualLogSource mls;
-
         public static ConfigFile config;
+        public static GameObject suitSyncGo;
 
-        public static GameObject settingsPrefab;
-
-        // Example Config for single model mod
         public static ConfigEntry<bool> enableModelForAllSuits { get; private set; }
         public static ConfigEntry<bool> enableModelAsDefault { get; private set; }
         public static ConfigEntry<string> suitNamesToEnableModel { get; private set; }
@@ -36,12 +33,17 @@ namespace ModelReplacement
             enableModelForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Model for all Suits", false, "Enable to model replace every suit. Set to false to specify suits");
             enableModelAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Model as default", false, "Enable to model replace every suit that hasn't been otherwise registered.");
             suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
-
         }
         private void Awake()
         {
+
             config = base.Config;
             InitConfig();
+
+            if (instance == null)
+            {
+                instance = this;
+            }
 
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
@@ -57,7 +59,6 @@ namespace ModelReplacement
                 }
             }
 
-
             Assets.PopulateAssets();
             ModelReplacementAPI.RegisterSuitModelReplacement("Femmployee", typeof(Femmployee));
             Harmony harmony = new Harmony("com.TiltedHat.FemmployeeMod");
@@ -65,11 +66,13 @@ namespace ModelReplacement
             Logger.LogInfo($"Plugin {"com.TiltedHat.FemmployeeMod"} is loaded!");
             mls = Logger;
 
-
-            settingsPrefab = (GameObject)Assets.MainAssetBundle.LoadAsset("Assets/SettingsObject/SettingsObject.prefab");
-            LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(settingsPrefab);
+            
+            suitSyncGo = (GameObject)Assets.MainAssetBundle.LoadAsset("Assets/SyncObject/SyncObject.prefab");
+            LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(suitSyncGo);
         }
+
     }
+
     public static class Assets
     {
         // Replace mbundle with the Asset Bundle Name from your unity project 
@@ -99,23 +102,14 @@ namespace ModelReplacement
         [HarmonyPostfix]
         static void UICreationPatch()
         {
+
             var bundle = Assets.MainAssetBundle;
-            string prefabName = "Assets/ModdedUI/ModdedUI.prefab";
-            if (bundle != null && bundle.Contains(prefabName))
+            GameObject prefab = bundle.LoadAsset<GameObject>("ModdedUI.prefab");
+            GameObject.Instantiate(prefab);
+            if (NetworkManager.Singleton.IsServer)
             {
-                GameObject prefab = bundle.LoadAsset<GameObject>(prefabName);
-                if (prefab != null)
-                {
-                    GameObject.Instantiate(prefab); 
-                }
-                else
-                {
-                    Debug.LogError($"Could not find prefab '{prefabName}' in the AssetBundle.");
-                }
-            }
-            else
-            {
-                Debug.LogError("AssetBundle is null or does not contain the specified prefab.");
+                GameObject suitSync = GameObject.Instantiate(FemmployeeModBase.suitSyncGo);
+                suitSync.GetComponent<NetworkObject>().Spawn();
             }
         }
     }
