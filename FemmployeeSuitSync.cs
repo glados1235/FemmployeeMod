@@ -1,38 +1,51 @@
 ﻿using ModelReplacement;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace FemmployeeMod
+namespace FemmployeeMod 
 {
     public class FemmployeeSuitSync : NetworkBehaviour
     {
 
         public static FemmployeeSuitSync instance;
-        public GameObject femmployeeGo;
-        
+        public static List<Femmployee> femmployees = new List<Femmployee>();
+
+
         public void Awake()
         {
             instance = this;
         }
 
+
         public void ApplySettings(Femmployee femmployee)
         {
-            femmployeeGo = femmployee.gameObject;
-            if (IsServer) { ApplySettingsClientRpc(); }
-            else { ApplySettingsServerRpc(); }
+            if (IsServer) { ApplySettingsClientRpc(femmployee.GetComponent<NetworkObject>()); }
+            else { ApplySettingsServerRpc((int)femmployee.controller.actualClientId); }
+
+
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void ApplySettingsServerRpc()
+        public void ApplySettingsServerRpc(int id) 
         {
-            ApplySettingsClientRpc();
+            
+            foreach (var f in femmployees)
+            {
+                if (id == (int)f.controller.actualClientId)
+                {
+                    ApplySettingsClientRpc(femmployees[id].GetComponent<NetworkObject>());
+
+                }
+            }
         }
 
         [ClientRpc]
-        public void ApplySettingsClientRpc()
+        public void ApplySettingsClientRpc(NetworkObjectReference networkObject)
         {
-            femmployeeGo.GetComponent<Femmployee>().ApplySwapRegions();
-            NetworkLog.LogWarning($"{femmployeeGo}");
+
+            
+            ((GameObject)networkObject).GetComponent<Femmployee>().ApplySwapRegions(((GameObject)networkObject).GetComponent<Femmployee>().localModdedUI.femmployeeSuitPreview.settings);
         }
 
     }

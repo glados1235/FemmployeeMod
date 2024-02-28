@@ -9,9 +9,6 @@ namespace FemmployeeMod
         public GameObject previewModel;
         public FemmployeeSettings settings;
 
-        public bool isBeingEdited;
-
-
         public void SetPreviewRegion(int dropdownID, int selectionIndex)
         {
             if(dropdownID == 0)

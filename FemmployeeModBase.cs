@@ -66,7 +66,6 @@ namespace ModelReplacement
             Logger.LogInfo($"Plugin {"com.TiltedHat.FemmployeeMod"} is loaded!");
             mls = Logger;
 
-            
             suitSyncGo = (GameObject)Assets.MainAssetBundle.LoadAsset("Assets/SyncObject/SyncObject.prefab");
             LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(suitSyncGo);
         }
@@ -102,7 +101,7 @@ namespace ModelReplacement
         [HarmonyPostfix]
         static void UICreationPatch()
         {
-
+            NetworkManager.Singleton.NetworkConfig.Prefabs.Prefabs.Do(obj => FemmployeeModBase.mls.LogWarning(obj.Prefab.name));
             var bundle = Assets.MainAssetBundle;
             GameObject prefab = bundle.LoadAsset<GameObject>("ModdedUI.prefab");
             GameObject.Instantiate(prefab);

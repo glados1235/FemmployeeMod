@@ -77,7 +77,6 @@ namespace FemmployeeMod
             Cursor.lockState = isUIOpen ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = isUIOpen;
             GameNetworkManager.Instance.localPlayerController.disableLookInput = isUIOpen;
-            femmployeeSuitPreview.isBeingEdited = isUIOpen;
         }
 
         public void ApplyChanges()
@@ -100,7 +99,7 @@ namespace FemmployeeMod
         public void DropdownSelection(FemmployeeUIWorker sender, int selectionIndex) 
         {
             femmployeeSuitPreview.SetPreviewRegion(sender.objectID, selectionIndex);
-            FemmployeeModBase.mls.LogWarning($"{sender.objectID} {selectionIndex}");
+            
         }
 
     }
