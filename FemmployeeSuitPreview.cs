@@ -31,6 +31,7 @@ namespace FemmployeeMod
             {
                 settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.legsRegionParts[selectionIndex];
             }
+            FemmployeeSuitSync.instance.SyncPreviewBodyMeshes(dropdownID, selectionIndex, (int)GameNetworkManager.Instance.localPlayerController.actualClientId);
         }
 
     }

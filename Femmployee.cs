@@ -48,11 +48,11 @@ namespace ModelReplacement
             FemmployeeModBase.mls.LogWarning($"The suit {settings.suitName} has been put on by player {settings.controller.actualClientId}");
         }
 
-        public void ApplySwapRegions(FemmployeeSettings settings)
+        public void ApplySwapRegions()
         {
             for (int smr = 0; smr < 5; smr++) 
             {
-                settings.bodyRegionMeshRenderers[smr].sharedMesh = settings.bodyRegionMeshRenderers[smr].sharedMesh;
+                settings.bodyRegionMeshRenderers[smr].sharedMesh = settings.previewBodyMeshes[smr];
             }
         }
 

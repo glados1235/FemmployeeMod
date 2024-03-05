@@ -10,6 +10,7 @@ namespace FemmployeeMod
         public GameObject replacementModel;
          
         public SkinnedMeshRenderer[] bodyRegionMeshRenderers;
+        public Mesh[] previewBodyMeshes;
 
         public Mesh[] headRegionParts;
         public Mesh[] chestRegionParts;

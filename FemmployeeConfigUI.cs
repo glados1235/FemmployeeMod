@@ -15,10 +15,13 @@ namespace FemmployeeMod
         public FemmployeeSuitPreview femmployeeSuitPreview; 
         public GameObject menu;
 
+        public static FemmployeeConfigUI instance;
+
 
         public void Awake()
         {
             SetupKeybindCallbacks();
+            instance = this;
         }
 
         public void Start()
@@ -81,7 +84,7 @@ namespace FemmployeeMod
 
         public void ApplyChanges()
         {
-            FemmployeeSuitSync.instance.ApplySettings(localFemmployeeGo.GetComponent<Femmployee>());
+            FemmployeeSuitSync.instance.ApplySettings((int)GameNetworkManager.Instance.localPlayerController.actualClientId);
         }
 
         public void ButtonTask(FemmployeeUIWorker sender)
