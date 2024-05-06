@@ -66,8 +66,8 @@ namespace FemmployeeMod
             Logger.LogInfo($"Plugin {"com.TiltedHat.FemmployeeMod"} is loaded!");
             mls = Logger;
 
-            suitSyncGo = (GameObject)Assets.MainAssetBundle.LoadAsset("Assets/SyncObject/SyncObject.prefab");
-            LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(suitSyncGo);
+            //suitSyncGo = (GameObject)Assets.MainAssetBundle.LoadAsset("Assets/SyncObject/SyncObject.prefab");
+            //LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(suitSyncGo);
         }
 
     }
@@ -90,7 +90,7 @@ namespace FemmployeeMod
 
             }
 
-
+             
         }
     }
 
