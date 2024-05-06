@@ -1,195 +1,40 @@
 ManifestFileVersion: 0
-CRC: 1528565679
+CRC: 4261525557
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f6c4c39226413866a238dc9557b73daf
+    Hash: c780a51fd65846cb196925cb08156fe2
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 84c154cd13d0676d5c6d794983ef2d4b
+    Hash: 1da8b5c295001bd9c02d27b5da09ef77
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: f6c4c39226413866a238dc9557b73daf
+    Hash: c780a51fd65846cb196925cb08156fe2
 HashAppended: 0
 ClassTypes:
 - Class: 1
   Script: {instanceID: 0}
 - Class: 4
   Script: {instanceID: 0}
-- Class: 20
-  Script: {instanceID: 0}
 - Class: 21
-  Script: {instanceID: 0}
-- Class: 28
   Script: {instanceID: 0}
 - Class: 43
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
-- Class: 74
-  Script: {instanceID: 0}
-- Class: 84
-  Script: {instanceID: 0}
 - Class: 90
-  Script: {instanceID: 0}
-- Class: 91
   Script: {instanceID: 0}
 - Class: 95
   Script: {instanceID: 0}
-- Class: 108
-  Script: {instanceID: 0}
-- Class: 114
-  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
-- Class: 114
-  Script: {fileID: 1172645824, guid: 7ac6f4aaedb4b01429ecfb1044d8e838, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 008ad30e5afb3544982e42aeba321a6d, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: 7642d36ef7666214a86474ac3d555621, type: 3}
-- Class: 114
-  Script: {fileID: -968822544, guid: 7ac6f4aaedb4b01429ecfb1044d8e838, type: 3}
-- Class: 114
-  Script: {fileID: -1491426481, guid: 7ac6f4aaedb4b01429ecfb1044d8e838, type: 3}
-- Class: 114
-  Script: {fileID: 752590947, guid: 7ac6f4aaedb4b01429ecfb1044d8e838, type: 3}
-- Class: 114
-  Script: {fileID: 692046811, guid: 7ac6f4aaedb4b01429ecfb1044d8e838, type: 3}
 - Class: 115
-  Script: {instanceID: 0}
-- Class: 128
   Script: {instanceID: 0}
 - Class: 137
   Script: {instanceID: 0}
-- Class: 213
-  Script: {instanceID: 0}
-- Class: 222
-  Script: {instanceID: 0}
-- Class: 223
-  Script: {instanceID: 0}
-- Class: 224
-  Script: {instanceID: 0}
-SerializeReferenceClassIdentifiers:
-- AssemblyName: Unity.RenderPipelines.Core.Runtime
-  ClassName: UnityEngine.Rendering.BitArray128
-- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
-  ClassName: UnityEngine.Rendering.HighDefinition.BoolScalableSettingValue
-- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
-  ClassName: UnityEngine.Rendering.HighDefinition.FrameSettings
-- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
-  ClassName: UnityEngine.Rendering.HighDefinition.FrameSettingsOverrideMask
-- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
-  ClassName: UnityEngine.Rendering.HighDefinition.HDPhysicalCamera
-- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
-  ClassName: UnityEngine.Rendering.HighDefinition.IntScalableSettingValue
-- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
-  ClassName: UnityEngine.Rendering.HighDefinition.ObsoleteFrameSettings
-- AssemblyName: Unity.RenderPipelines.HighDefinition.Runtime
-  ClassName: UnityEngine.Rendering.HighDefinition.ObsoleteLightLoopSettings
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.FaceInfo_Legacy
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.FontAssetCreationSettings
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.KerningTable
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_Character
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_Dropdown/DropdownEvent
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_Dropdown/OptionDataList
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_FontFeatureTable
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_FontWeightPair
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.VertexGradient
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.ArgumentCache
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.PersistentCallGroup
-- AssemblyName: UnityEngine.CoreModule
-  ClassName: UnityEngine.Events.PersistentListenerMode
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.FaceInfo
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.Glyph
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.GlyphMetrics
-- AssemblyName: UnityEngine.TextCoreFontEngineModule
-  ClassName: UnityEngine.TextCore.GlyphRect
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.AnimationTriggers
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.Button/ButtonClickedEvent
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.ColorBlock
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.Navigation
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.ScrollRect/ScrollRectEvent
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.Scrollbar/ScrollEvent
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.SpriteState
-- AssemblyName: UnityEngine.UI
-  ClassName: UnityEngine.UI.Toggle/ToggleEvent
+SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/ModdedUI/UIElements/Fills/UIElements_slider-fill.png
-- Assets/ModdedUI/UIElements/UIElements_torso-outline.png
-- Assets/ModdedUI/FemmployeeSuitPreviewPrefab/playerPreviewController.controller
-- Assets/ModdedUI/UIElements/Fills/UIElements_helmet-fill.png
 - Assets/ModelReplacementSDK/AssetsToBuild/Femmployee.prefab
-- Assets/ModdedUI/New Material.mat
-- Assets/ModdedUI/UIElements/Fills/UIElements_arm-fill.png
-- Assets/ModdedUI/RegionHeadder.prefab
-- Assets/ModdedUI/UIElements/export202402131804098592.psd_0000_cog.png
-- Assets/ModdedUI/UIElements/UIElements_legs-outline.png
-- Assets/ModdedUI/UIElements/Fills/UIElements_waist-fill.png
-- Assets/ModdedUI/UIElements/export202402131804098592.psd_0007_far-arm.png
-- Assets/ModdedUI/FemmployeeSuitPreviewPrefab/Quota Dance.anim
-- Assets/ModdedUI/Perfect DOS VGA 437.ttf
-- Assets/ModdedUI/UIElements/Fills/UIElements_torso-fill.png
-- Assets/SyncObject/SyncObject.prefab
-- Assets/ModdedUI/UIFoldoutClosed.png
-- Assets/ModdedUI/ModdedUI.prefab
-- Assets/ModdedUI/UIElements/UIElements_arm-outline.png
-- Assets/ModdedUI/Perfect DOS VGA 437 SDF.asset
-- Assets/ModdedUI/UIElements/Fills/UIElements_legs-fill.png
-- Assets/ModdedUI/UIElements/UIElements_waist-outline.png
-- Assets/ModdedUI/PlayerPreviewRT.renderTexture
-- Assets/ModdedUI/UIElements/FullSprite.png
-- Assets/ModdedUI/UIElements/UIElements_slider-outline.png
-- Assets/ModdedUI/E5 5.png
-- Assets/ModdedUI/UIElements/UIElements_helmet-outline.png
-- Assets/ModdedUI/FemmployeeSuitPreviewPrefab/FemmployeeSuitPreviewPrefab.prefab
 Dependencies: []

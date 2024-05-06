@@ -13,25 +13,25 @@ namespace FemmployeeMod
         {
             if(dropdownID == 0)
             {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.headRegionParts[selectionIndex];
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.headRegionParts[selectionIndex].mesh;
             }
             if(dropdownID == 1)
             {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.chestRegionParts[selectionIndex];
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.chestRegionParts[selectionIndex].mesh;
             }
             if (dropdownID == 2)
             {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.armsRegionParts[selectionIndex];
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.armsRegionParts[selectionIndex].mesh;
             }
             if(dropdownID == 3)
             {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.waistRegionParts[selectionIndex];
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.waistRegionParts[selectionIndex].mesh;
             }
             if(dropdownID == 4)
             {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.legsRegionParts[selectionIndex];
+                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.legsRegionParts[selectionIndex].mesh;
             }
-            FemmployeeSuitSync.instance.SyncPreviewBodyMeshes(dropdownID, selectionIndex, (int)GameNetworkManager.Instance.localPlayerController.actualClientId);
+            FemmployeeSuitSync.instance.SyncPreviewBodyMeshes(dropdownID, selectionIndex, NetworkManager.Singleton.LocalClientId);
         }
 
     }

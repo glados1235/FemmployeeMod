@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using TMPro;
 using static IngamePlayerSettings;
+using Unity.Netcode;
 
 namespace FemmployeeMod
 {
@@ -84,7 +85,7 @@ namespace FemmployeeMod
 
         public void ApplyChanges()
         {
-            FemmployeeSuitSync.instance.ApplySettings((int)GameNetworkManager.Instance.localPlayerController.actualClientId);
+            FemmployeeSuitSync.instance.ApplySettings(NetworkManager.Singleton.LocalClientId);
         }
 
         public void ButtonTask(FemmployeeUIWorker sender)

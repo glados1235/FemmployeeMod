@@ -2,15 +2,15 @@ using BepInEx;
 using HarmonyLib;
 using UnityEngine;
 using System.Reflection;
+using ModelReplacement;
 using BepInEx.Configuration;
 using System;
-using LethalCompanyInputUtils.Api;
-using UnityEngine.InputSystem;
 using BepInEx.Logging;
 using Unity.Netcode;
-using FemmployeeMod;
+using UnityEngine.InputSystem;
+using LethalCompanyInputUtils.Api;
 
-namespace ModelReplacement
+namespace FemmployeeMod
 {
     [BepInPlugin("com.TiltedHat.FemmployeeMod", "Femmployee Mod", "0.1.0")]
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
@@ -77,7 +77,7 @@ namespace ModelReplacement
         // Replace mbundle with the Asset Bundle Name from your unity project 
         public static string mainAssetBundleName = "femmployeemodbundle";
         public static AssetBundle MainAssetBundle = null;
-        private static string GetAssemblyName() => Assembly.GetExecutingAssembly().GetName().Name.Replace(" ","_");
+        private static string GetAssemblyName() => Assembly.GetExecutingAssembly().GetName().Name.Replace(" ", "_");
         public static void PopulateAssets()
         {
             if (MainAssetBundle == null)
@@ -119,5 +119,5 @@ namespace ModelReplacement
         [InputAction("<Keyboard>/g", Name = "Femmployee UI")]
         public InputAction FemmployeeUIToggle { get; set; }
     }
- 
+
 }

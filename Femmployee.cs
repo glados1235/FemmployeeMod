@@ -1,8 +1,8 @@
-using FemmployeeMod;
+using ModelReplacement;
 using System.Runtime.Serialization;
 using UnityEngine;
 
-namespace ModelReplacement
+namespace FemmployeeMod
 {
     public class Femmployee : BodyReplacementBase 
     {

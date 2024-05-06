@@ -12,11 +12,11 @@ namespace FemmployeeMod
         public SkinnedMeshRenderer[] bodyRegionMeshRenderers;
         public Mesh[] previewBodyMeshes;
 
-        public Mesh[] headRegionParts;
-        public Mesh[] chestRegionParts;
-        public Mesh[] armsRegionParts;
-        public Mesh[] waistRegionParts;
-        public Mesh[] legsRegionParts;
+        public FemmployeePart[] headRegionParts;
+        public FemmployeePart[] chestRegionParts;
+        public FemmployeePart[] armsRegionParts;
+        public FemmployeePart[] waistRegionParts;
+        public FemmployeePart[] legsRegionParts;
 
         public string suitName { get; set; } = "";
 
