@@ -18,26 +18,33 @@ namespace FemmployeeMod
 
             settings.bodyRegionMeshRenderers[dropdownID].materials = playerFemmployee.settings.previewBodyParts[dropdownID].materials;
 
-            switch (dropdownID)
+            if (Tools.CheckIsServer())
             {
-                case 0:
-                    playerFemmployee.settings.networkedSettings.headSync = selectionKeyName; 
-                    break;
-                case 1:
-                    playerFemmployee.settings.networkedSettings.chestSync = selectionKeyName; 
-                    break;
-                case 2:
-                    playerFemmployee.settings.networkedSettings.armsSync = selectionKeyName; 
-                    break;
-                case 3:
-                    playerFemmployee.settings.networkedSettings.waistSync = selectionKeyName; 
-                    break;
-                case 4: 
-                    playerFemmployee.settings.networkedSettings.legSync = selectionKeyName; 
-                    break;
-                default:
-                    FemmployeeModBase.mls.LogWarning("Invalid dropdown ID");
-                    return;
+                switch (dropdownID)
+                {
+                    case 0:
+                        playerFemmployee.settings.networkedSettings.headSync = selectionKeyName;
+                        break;
+                    case 1:
+                        playerFemmployee.settings.networkedSettings.chestSync = selectionKeyName;
+                        break;
+                    case 2:
+                        playerFemmployee.settings.networkedSettings.armsSync = selectionKeyName;
+                        break;
+                    case 3:
+                        playerFemmployee.settings.networkedSettings.waistSync = selectionKeyName;
+                        break;
+                    case 4:
+                        playerFemmployee.settings.networkedSettings.legSync = selectionKeyName;
+                        break;
+                    default:
+                        FemmployeeModBase.mls.LogWarning("Invalid dropdown ID");
+                        return;
+                }
+            }
+            else
+            {
+                playerFemmployee.settings.networkedSettings.SetNetworkVarServerRpc(dropdownID, selectionKeyName);
             }
         }
 

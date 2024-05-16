@@ -28,6 +28,7 @@ namespace ModelReplacement
         protected override void OnDestroy()
         {
             base.OnDestroy();
+            Destroy(settings.networkedSettings.gameObject);
         } 
 
         protected override void Start()
@@ -43,7 +44,8 @@ namespace ModelReplacement
                 var networkObject = networkedSettingsGo.GetComponent<NetworkObject>();
                 var networkedSettings = networkedSettingsGo.GetComponent<NetworkedSettings>();
                 networkObject.Spawn();
-                settings.networkedSettings = networkedSettings;
+                networkObject.TrySetParent(replacementModel.gameObject, false);
+  
                 networkedSettings.SetNetworkedSettingsClientRpc(controller.actualClientId);
             }
 
@@ -90,24 +92,22 @@ namespace ModelReplacement
         {
             //head Apply
             settings.bodyRegionMeshRenderers[0].sharedMesh = settings.partsList[0][settings.networkedSettings.headSync].mesh;
-
+            settings.bodyRegionMeshRenderers[0].materials = settings.partsList[0][settings.networkedSettings.headSync].materials;
             //Chest Apply
             settings.bodyRegionMeshRenderers[1].sharedMesh = settings.partsList[1][settings.networkedSettings.chestSync].mesh;
+            settings.bodyRegionMeshRenderers[1].materials = settings.partsList[1][settings.networkedSettings.chestSync].materials;
 
             //Arms Apply
             settings.bodyRegionMeshRenderers[2].sharedMesh = settings.partsList[2][settings.networkedSettings.armsSync].mesh;
+            settings.bodyRegionMeshRenderers[2].materials = settings.partsList[2][settings.networkedSettings.armsSync].materials;
 
             //Waist Apply
             settings.bodyRegionMeshRenderers[3].sharedMesh = settings.partsList[3][settings.networkedSettings.waistSync].mesh;
+            settings.bodyRegionMeshRenderers[3].materials = settings.partsList[3][settings.networkedSettings.waistSync].materials;
 
             //Legs Apply
             settings.bodyRegionMeshRenderers[4].sharedMesh = settings.partsList[4][settings.networkedSettings.legSync].mesh;
-
-
-            for (int smr = 0; smr < 5; smr++) 
-            {
-                settings.bodyRegionMeshRenderers[smr].materials = settings.previewBodyParts[smr].materials;
-            }
+            settings.bodyRegionMeshRenderers[4].materials = settings.partsList[4][settings.networkedSettings.legSync].materials;
         }
 
     }

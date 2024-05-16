@@ -1,9 +1,12 @@
 ﻿using ModelReplacement;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Unity.Collections;
 using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.UI;
 using static IngamePlayerSettings;
 
 namespace FemmployeeMod
@@ -61,6 +64,35 @@ namespace FemmployeeMod
 
         public ulong playerID;
 
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SetNetworkVarServerRpc(int id, string value)
+        {
+
+            switch (id)
+            {
+                case 0:
+                    headSync = value;
+                    break;
+                case 1:
+                    chestSync = value;
+                    break;
+                case 2:
+                    armsSync = value;
+                    break;
+                case 3:
+                    waistSync = value;
+                    break;
+                case 4:
+                    legSync = value;
+                    break;
+                default:
+                    FemmployeeModBase.mls.LogWarning("Invalid dropdown ID");
+                    return;
+            }
+        }
+
+
         public void ApplySettings()
         {
             if (IsServer) { ApplySettingsClientRpc(); }
@@ -82,18 +114,19 @@ namespace FemmployeeMod
         [ClientRpc]
         public void SetNetworkedSettingsClientRpc(ulong _playerID)
         {
-            NetworkLog.LogError($"{ _playerID}");
+            StartCoroutine(WaitForFemmployeeComponent(_playerID));
+        }
 
+        private IEnumerator WaitForFemmployeeComponent(ulong _playerID)
+        {
+            yield return new WaitUntil(() => StartOfRound.Instance.allPlayerScripts[_playerID].GetComponent<Femmployee>() != null);
+            AssignValuesToComponents(_playerID);
+        }
 
-            NetworkLog.LogError($"{StartOfRound.Instance.allPlayerScripts[playerID]}");
-
-
-            settings = StartOfRound.Instance.allPlayerScripts[playerID].GetComponent<Femmployee>().settings;
-
-
+        private void AssignValuesToComponents(ulong _playerID)
+        {
+            settings = StartOfRound.Instance.allPlayerScripts[_playerID].GetComponent<Femmployee>().settings;
             settings.networkedSettings = this;
-
-
             playerID = _playerID;
         }
     }
