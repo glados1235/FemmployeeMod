@@ -2,15 +2,15 @@ using BepInEx;
 using HarmonyLib;
 using UnityEngine;
 using System.Reflection;
-using ModelReplacement;
 using BepInEx.Configuration;
 using System;
 using BepInEx.Logging;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
 using LethalCompanyInputUtils.Api;
+using FemmployeeMod;
 
-namespace FemmployeeMod
+namespace ModelReplacement
 {
     [BepInPlugin("com.TiltedHat.FemmployeeMod", "Femmployee Mod", "0.1.0")]
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
@@ -22,7 +22,7 @@ namespace FemmployeeMod
         internal static InputClass InputActionsInstance = new InputClass();
         public static ManualLogSource mls;
         public static ConfigFile config;
-        public static GameObject suitSyncGo;
+        public static GameObject networkedSettingsGo;
 
         public static ConfigEntry<bool> enableModelForAllSuits { get; private set; }
         public static ConfigEntry<bool> enableModelAsDefault { get; private set; }
@@ -66,8 +66,8 @@ namespace FemmployeeMod
             Logger.LogInfo($"Plugin {"com.TiltedHat.FemmployeeMod"} is loaded!");
             mls = Logger;
 
-            //suitSyncGo = (GameObject)Assets.MainAssetBundle.LoadAsset("Assets/SyncObject/SyncObject.prefab");
-            //LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(suitSyncGo);
+            networkedSettingsGo = (GameObject)Assets.MainAssetBundle.LoadAsset("NetworkedSettings.prefab");
+            LethalLib.Modules.NetworkPrefabs.RegisterNetworkPrefab(networkedSettingsGo);
         }
 
     }
@@ -105,11 +105,6 @@ namespace FemmployeeMod
             var bundle = Assets.MainAssetBundle;
             GameObject prefab = bundle.LoadAsset<GameObject>("ModdedUI.prefab");
             GameObject.Instantiate(prefab);
-            if (NetworkManager.Singleton.IsServer)
-            {
-                GameObject suitSync = GameObject.Instantiate(FemmployeeModBase.suitSyncGo);
-                suitSync.GetComponent<NetworkObject>().Spawn();
-            }
         }
     }
 

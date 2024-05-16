@@ -1,4 +1,7 @@
-﻿using Unity.Netcode;
+﻿using GameNetcodeStuff;
+using ModelReplacement;
+using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace FemmployeeMod
@@ -8,30 +11,43 @@ namespace FemmployeeMod
         public Camera modelViewCamera;
         public GameObject previewModel;
         public FemmployeeSettings settings;
-
-        public void SetPreviewRegion(int dropdownID, int selectionIndex)
+        public void SetPreviewRegion(int dropdownID, string selectionKeyName, Femmployee playerFemmployee)
         {
-            if(dropdownID == 0)
+            playerFemmployee.settings.previewBodyParts[dropdownID] = settings.partsList[dropdownID][selectionKeyName];
+            settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = playerFemmployee.settings.previewBodyParts[dropdownID].mesh;
+
+            settings.bodyRegionMeshRenderers[dropdownID].materials = playerFemmployee.settings.previewBodyParts[dropdownID].materials;
+
+            switch (dropdownID)
             {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.headRegionParts[selectionIndex].mesh;
+                case 0:
+                    playerFemmployee.settings.networkedSettings.headSync = selectionKeyName; 
+                    break;
+                case 1:
+                    playerFemmployee.settings.networkedSettings.chestSync = selectionKeyName; 
+                    break;
+                case 2:
+                    playerFemmployee.settings.networkedSettings.armsSync = selectionKeyName; 
+                    break;
+                case 3:
+                    playerFemmployee.settings.networkedSettings.waistSync = selectionKeyName; 
+                    break;
+                case 4: 
+                    playerFemmployee.settings.networkedSettings.legSync = selectionKeyName; 
+                    break;
+                default:
+                    FemmployeeModBase.mls.LogWarning("Invalid dropdown ID");
+                    return;
             }
-            if(dropdownID == 1)
+        }
+
+        public void SetBlendshape(int id, float value, string[] blendshapes)
+        {
+            foreach (var blendshape in blendshapes)
             {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.chestRegionParts[selectionIndex].mesh;
+                int shapeID = settings.bodyRegionMeshRenderers[id].sharedMesh.GetBlendShapeIndex(blendshape);
+                settings.bodyRegionMeshRenderers[id].SetBlendShapeWeight(shapeID, value);
             }
-            if (dropdownID == 2)
-            {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.armsRegionParts[selectionIndex].mesh;
-            }
-            if(dropdownID == 3)
-            {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.waistRegionParts[selectionIndex].mesh;
-            }
-            if(dropdownID == 4)
-            {
-                settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = settings.legsRegionParts[selectionIndex].mesh;
-            }
-            FemmployeeSuitSync.instance.SyncPreviewBodyMeshes(dropdownID, selectionIndex, NetworkManager.Singleton.LocalClientId);
         }
 
     }
