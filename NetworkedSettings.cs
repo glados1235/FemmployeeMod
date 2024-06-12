@@ -2,10 +2,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 using static IngamePlayerSettings;
 
@@ -62,7 +64,8 @@ namespace FemmployeeMod
         private NetworkVariable<FixedString64Bytes> _waistSync = new() { Value = "" };
         private NetworkVariable<FixedString64Bytes> _legSync = new() { Value = "" };
 
-        public ulong playerID;
+        public NetworkVariable<ulong> playerID;
+        public NetworkVariable<bool> hasInitialized;
 
 
         [ServerRpc(RequireOwnership = false)]
@@ -92,7 +95,6 @@ namespace FemmployeeMod
             }
         }
 
-
         public void ApplySettings()
         {
             if (IsServer) { ApplySettingsClientRpc(); }
@@ -105,10 +107,17 @@ namespace FemmployeeMod
             ApplySettingsClientRpc();
         }
 
+
+        [ClientRpc]
+        public void SetObjectNameClientRpc(ulong _playerID)
+        {
+            name = name + " || Player: " + _playerID;
+        }
+
         [ClientRpc]
         public void ApplySettingsClientRpc()
         {
-            StartOfRound.Instance.allPlayerScripts[playerID].GetComponent<Femmployee>().ApplySwapRegions();
+            StartOfRound.Instance.allPlayerScripts[playerID.Value].GetComponent<Femmployee>().ApplySwapRegions();
         }
 
         [ClientRpc]
@@ -123,11 +132,35 @@ namespace FemmployeeMod
             AssignValuesToComponents(_playerID);
         }
 
-        private void AssignValuesToComponents(ulong _playerID)
+        public void AssignValuesToComponents(ulong _playerID)
         {
             settings = StartOfRound.Instance.allPlayerScripts[_playerID].GetComponent<Femmployee>().settings;
             settings.networkedSettings = this;
-            playerID = _playerID;
+
+
+            if (Tools.CheckIsServer())
+            {
+                if (!hasInitialized.Value)
+                {
+                    playerID.Value = _playerID;
+
+                    headSync = settings.bodyRegionMeshRenderers[0].sharedMesh.name;
+                    chestSync = settings.bodyRegionMeshRenderers[1].sharedMesh.name;
+                    armsSync = settings.bodyRegionMeshRenderers[2].sharedMesh.name;
+                    waistSync = settings.bodyRegionMeshRenderers[3].sharedMesh.name;
+                    legSync = settings.bodyRegionMeshRenderers[4].sharedMesh.name;
+                    hasInitialized.Value = true;
+                }
+                 
+            }
+
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SelfDestructServerRpc()
+        {
+            this.GetComponent<NetworkObject>().Despawn(true);
+        }
+
     }
 }

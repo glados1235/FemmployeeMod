@@ -5,6 +5,7 @@ using FemmployeeMod;
 using System.Collections.Generic;
 using Unity.Netcode;
 using static IngamePlayerSettings;
+using System.Collections;
 
 namespace ModelReplacement
 {
@@ -28,7 +29,11 @@ namespace ModelReplacement
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            Destroy(settings.networkedSettings.gameObject);
+            if (Tools.CheckIsServer()) 
+            {
+                settings.networkedSettings.SelfDestructServerRpc();
+            }
+                
         } 
 
         protected override void Start()
@@ -39,29 +44,34 @@ namespace ModelReplacement
             settings.suitName = suitName;
 
             if (Tools.CheckIsServer())
-            {
+            { 
                 GameObject networkedSettingsGo = Instantiate(FemmployeeModBase.networkedSettingsGo);
                 var networkObject = networkedSettingsGo.GetComponent<NetworkObject>();
                 var networkedSettings = networkedSettingsGo.GetComponent<NetworkedSettings>();
                 networkObject.Spawn();
                 networkObject.TrySetParent(replacementModel.gameObject, false);
-  
+
+
                 networkedSettings.SetNetworkedSettingsClientRpc(controller.actualClientId);
+                networkedSettings.SetObjectNameClientRpc(controller.actualClientId);
             }
-
-
 
             localModdedUI = FindObjectOfType<FemmployeeConfigUI>();
 
             InitializeParts();
 
+
             if (controller != GameNetworkManager.Instance.localPlayerController) { return; }
+
             localModdedUI.femmployeeSuitPreview.settings.partsList = settings.partsList;
             localModdedUI.localFemmployeeGo = gameObject;
             localModdedUI.PopulateDropdowns();
+            
 
             FemmployeeModBase.mls.LogWarning($"The suit {settings.suitName} has been put on by player {settings.controller.actualClientId}");
         }
+
+
 
         private void InitializeParts()
         {
@@ -84,6 +94,7 @@ namespace ModelReplacement
                     }
                 }
             }
+            
         }
 
 

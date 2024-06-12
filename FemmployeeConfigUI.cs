@@ -43,7 +43,6 @@ namespace FemmployeeMod
             foreach (TMP_Dropdown dropdown in regionDropdowns)
             {
                 dropdown.ClearOptions();
-                FemmployeeModBase.mls.LogWarning($"Dropdown options cleared for dropdown {dropdown.name}");
             }
 
             // Iterate over dropdowns
@@ -52,14 +51,12 @@ namespace FemmployeeMod
                 // Check if we have parts for this region
                 if (i < femmployeeSuitPreview.settings.partsList.Count)
                 {
-                    FemmployeeModBase.mls.LogWarning($"Parts found for region {i}");
 
                     // Iterate over parts for this region
                     foreach (var part in femmployeeSuitPreview.settings.partsList[i])
                     {
                         // Add each part to the dropdown options
                         regionDropdowns[i].options.Add(new TMP_Dropdown.OptionData(part.Key));
-                        FemmployeeModBase.mls.LogWarning($"Added part {part.Key} to dropdown {regionDropdowns[i].name}");
                     }
                 }
                 else
@@ -111,7 +108,6 @@ namespace FemmployeeMod
             // Iterate through the shapeGroupsBySuffix dictionary
             foreach (var group in shapeGroupsBySuffix)
             {
-                FemmployeeModBase.mls.LogWarning($"Numeric Suffix: {group.Key}, Blend Shapes: {string.Join(", ", group.Value)}");
 
                 GameObject slider = Instantiate(sliderGO, blendshapeSlidersGO.transform);
 
