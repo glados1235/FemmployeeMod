@@ -51,7 +51,6 @@ namespace ModelReplacement
                 networkObject.Spawn();
                 networkObject.TrySetParent(replacementModel.gameObject, false);
                 networkedSettings.playerID.Value = controller.actualClientId;
-                networkedSettings.AssignValuesClientRpc(controller.actualClientId);
             }
 
             localModdedUI = FindObjectOfType<FemmployeeConfigUI>();
