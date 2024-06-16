@@ -31,7 +31,7 @@ namespace ModelReplacement
             base.OnDestroy();
             if (Tools.CheckIsServer()) 
             {
-                settings.networkedSettings.SelfDestructServerRpc();
+                settings.networkedSettings.SelfDestruct();
             }
                 
         } 
@@ -50,10 +50,8 @@ namespace ModelReplacement
                 var networkedSettings = networkedSettingsGo.GetComponent<NetworkedSettings>();
                 networkObject.Spawn();
                 networkObject.TrySetParent(replacementModel.gameObject, false);
-
-
-                networkedSettings.SetNetworkedSettingsClientRpc(controller.actualClientId);
-                networkedSettings.SetObjectNameClientRpc(controller.actualClientId);
+                networkedSettings.playerID.Value = controller.actualClientId;
+                networkedSettings.AssignValuesClientRpc(controller.actualClientId);
             }
 
             localModdedUI = FindObjectOfType<FemmployeeConfigUI>();

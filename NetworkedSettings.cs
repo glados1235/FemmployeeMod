@@ -67,7 +67,49 @@ namespace FemmployeeMod
         public NetworkVariable<ulong> playerID;
         public NetworkVariable<bool> hasInitialized;
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            StartCoroutine(waitForIDSync());
+        }
 
+        public IEnumerator waitForIDSync()
+        {
+            yield return new WaitForSeconds(2); //hekken change this asap
+            FemmployeeModBase.mls.LogWarning($"the id is {playerID.Value}");
+            StartCoroutine(WaitForFemmployeeComponent(playerID.Value));
+        }
+
+        [ClientRpc]
+        public void AssignValuesClientRpc(ulong _playerID)
+        {
+            StartCoroutine(WaitForFemmployeeComponent(_playerID));
+        }
+
+        private IEnumerator WaitForFemmployeeComponent(ulong _playerID)
+        {
+            yield return new WaitUntil(() => StartOfRound.Instance.allPlayerScripts[_playerID].GetComponent<Femmployee>() != null);
+            AssignValuesToComponents(_playerID);
+        }
+
+        public void AssignValuesToComponents(ulong _playerID)
+        {
+            settings = StartOfRound.Instance.allPlayerScripts[_playerID].GetComponent<Femmployee>().settings;
+            settings.networkedSettings = this;
+            name = name + " || Player: " + _playerID;
+            FemmployeeModBase.mls.LogWarning($"ran AssignValuesToComponents with the id {_playerID} and changed the name to {name}");
+            if (Tools.CheckIsServer())
+            {
+                headSync = settings.bodyRegionMeshRenderers[0].sharedMesh.name;
+                chestSync = settings.bodyRegionMeshRenderers[1].sharedMesh.name;
+                armsSync = settings.bodyRegionMeshRenderers[2].sharedMesh.name;
+                waistSync = settings.bodyRegionMeshRenderers[3].sharedMesh.name;
+                legSync = settings.bodyRegionMeshRenderers[4].sharedMesh.name;
+            }
+
+        }
+
+         
         [ServerRpc(RequireOwnership = false)]
         public void SetNetworkVarServerRpc(int id, string value)
         {
@@ -107,57 +149,13 @@ namespace FemmployeeMod
             ApplySettingsClientRpc();
         }
 
-
-        [ClientRpc]
-        public void SetObjectNameClientRpc(ulong _playerID)
-        {
-            name = name + " || Player: " + _playerID;
-        }
-
         [ClientRpc]
         public void ApplySettingsClientRpc()
         {
             StartOfRound.Instance.allPlayerScripts[playerID.Value].GetComponent<Femmployee>().ApplySwapRegions();
         }
 
-        [ClientRpc]
-        public void SetNetworkedSettingsClientRpc(ulong _playerID)
-        {
-            StartCoroutine(WaitForFemmployeeComponent(_playerID));
-        }
-
-        private IEnumerator WaitForFemmployeeComponent(ulong _playerID)
-        {
-            yield return new WaitUntil(() => StartOfRound.Instance.allPlayerScripts[_playerID].GetComponent<Femmployee>() != null);
-            AssignValuesToComponents(_playerID);
-        }
-
-        public void AssignValuesToComponents(ulong _playerID)
-        {
-            settings = StartOfRound.Instance.allPlayerScripts[_playerID].GetComponent<Femmployee>().settings;
-            settings.networkedSettings = this;
-
-
-            if (Tools.CheckIsServer())
-            {
-                if (!hasInitialized.Value)
-                {
-                    playerID.Value = _playerID;
-
-                    headSync = settings.bodyRegionMeshRenderers[0].sharedMesh.name;
-                    chestSync = settings.bodyRegionMeshRenderers[1].sharedMesh.name;
-                    armsSync = settings.bodyRegionMeshRenderers[2].sharedMesh.name;
-                    waistSync = settings.bodyRegionMeshRenderers[3].sharedMesh.name;
-                    legSync = settings.bodyRegionMeshRenderers[4].sharedMesh.name;
-                    hasInitialized.Value = true;
-                }
-                 
-            }
-
-        }
-
-        [ServerRpc(RequireOwnership = false)]
-        public void SelfDestructServerRpc()
+        public void SelfDestruct()
         {
             this.GetComponent<NetworkObject>().Despawn(true);
         }
