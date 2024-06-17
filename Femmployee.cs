@@ -50,7 +50,7 @@ namespace ModelReplacement
                 var networkedSettings = networkedSettingsGo.GetComponent<NetworkedSettings>();
                 networkObject.Spawn();
                 networkObject.TrySetParent(replacementModel.gameObject, false);
-                networkedSettings.playerID.Value = controller.actualClientId;
+                networkedSettings.playerID.Value = controller.playerClientId;
             }
 
             localModdedUI = FindObjectOfType<FemmployeeConfigUI>();
@@ -65,7 +65,7 @@ namespace ModelReplacement
             localModdedUI.PopulateDropdowns();
             
 
-            FemmployeeModBase.mls.LogWarning($"The suit {settings.suitName} has been put on by player {settings.controller.actualClientId}");
+            FemmployeeModBase.mls.LogWarning($"The suit {settings.suitName} has been put on by player {settings.controller.playerClientId}");
         }
 
 
