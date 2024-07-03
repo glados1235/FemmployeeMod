@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1430949024
+CRC: 2407862140
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 895b63d0d642269e9f8915db351b65d2
+    Hash: 04365982ea86ea13fc2e7a82b0021443
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ef83e244dd42b330c666dc3e7d3b00c4
+    Hash: 7ea87403106ce0cc7adfe66323a80d3d
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 895b63d0d642269e9f8915db351b65d2
+    Hash: 04365982ea86ea13fc2e7a82b0021443
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -20,17 +20,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
-- Class: 23
-  Script: {instanceID: 0}
 - Class: 28
-  Script: {instanceID: 0}
-- Class: 33
   Script: {instanceID: 0}
 - Class: 43
   Script: {instanceID: 0}
 - Class: 48
-  Script: {instanceID: 0}
-- Class: 64
   Script: {instanceID: 0}
 - Class: 74
   Script: {instanceID: 0}
@@ -69,11 +63,15 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 752590947, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
 - Class: 114
+  Script: {fileID: 1448383285, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
+- Class: 114
   Script: {fileID: 692046811, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
 - Class: 114
   Script: {fileID: -668211948, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
 - Class: 114
@@ -112,6 +110,8 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.Netcode.Runtime
+  ClassName: Unity.Netcode.NetworkVariable`1[System.Boolean]
+- AssemblyName: Unity.Netcode.Runtime
   ClassName: Unity.Netcode.NetworkVariable`1[System.Int32]
 - AssemblyName: Unity.RenderPipelines.Core.Runtime
   ClassName: UnityEngine.Rendering.BitArray128
@@ -140,17 +140,13 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_Dropdown/DropdownEvent
 - AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_Dropdown/OptionData
+- AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_Dropdown/OptionDataList
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_FontFeatureTable
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.TMP_FontWeightPair
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphAdjustmentRecord
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphPairAdjustmentRecord
-- AssemblyName: Unity.TextMeshPro
-  ClassName: TMPro.TMP_GlyphValueRecord
 - AssemblyName: Unity.TextMeshPro
   ClassName: TMPro.VertexGradient
 - AssemblyName: UnityEngine.CoreModule
@@ -190,9 +186,11 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.Toggle/ToggleEvent
 Assets:
-- Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_slider-fill.png
+- Assets/ProjectAssets/ModdedUI/SliderBodyRainbowGradient.png
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_torso-outline.png
+- Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_slider-fill.png
 - Assets/ProjectAssets/FemmployeeParts/Helmet Magical.asset
+- Assets/ProjectAssets/Models/mats/Silver.mat
 - Assets/ProjectAssets/Models/TheFemmployee.fbx
 - Assets/ProjectAssets/NetworkedSettings.prefab
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_helmet-fill.png
@@ -212,10 +210,12 @@ Assets:
 - Assets/ProjectAssets/Models/mats/Suit.mat
 - Assets/ProjectAssets/ModdedUI/Perfect DOS VGA 437.ttf
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_legs-outline.png
+- Assets/ProjectAssets/ModdedUI/SliderBodyGradient.png
 - Assets/ProjectAssets/FemmployeeParts/Arms Alien.asset
 - Assets/ProjectAssets/FemmployeeParts/Helmet Packless.asset
 - Assets/ProjectAssets/Models/mats/BLACK.mat
 - Assets/ProjectAssets/Models/mats/Iron.mat
+- Assets/ProjectAssets/ModdedUI/MenuSprite.png
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_arm-outline.png
 - Assets/ProjectAssets/FemmployeeParts/Helmet Backpack.asset
 - Assets/ProjectAssets/FemmployeeParts/Legs Thighboots.asset
@@ -225,15 +225,17 @@ Assets:
 - Assets/ProjectAssets/FemmployeeParts/Default Legs.asset
 - Assets/ProjectAssets/ModdedUI/Perfect DOS VGA 437 SDF.asset
 - Assets/ProjectAssets/FemmployeeParts/Helmet Bowler.asset
-- Assets/ProjectAssets/Models/mats/Yello.mat
+- Assets/ProjectAssets/ModdedUI/SliderBody.png
 - Assets/ProjectAssets/ModdedUI/PlayerPreviewRT.renderTexture
 - Assets/ProjectAssets/ModdedUI/UIElements/FullSprite.png
+- Assets/ProjectAssets/Models/mats/Yello.mat
 - Assets/ProjectAssets/FemmployeeParts/Helmet Gas.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_waist-outline.png
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_slider-outline.png
 - Assets/ProjectAssets/FemmployeeParts/Hips Underwear.asset
 - Assets/ProjectAssets/Models/mats/Leather.mat
 - Assets/ProjectAssets/FemmployeeParts/Default Arms.asset
+- Assets/ProjectAssets/ModdedUI/RGBSliders.png
 - Assets/ModelReplacementSDK/AssetsToBuild/Femmployee.prefab
 - Assets/ProjectAssets/FemmployeeParts/Hips Skirt Short.asset
 - Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/playerPreviewController.controller
@@ -243,6 +245,7 @@ Assets:
 - Assets/ProjectAssets/FemmployeeParts/Torso Unzipped.asset
 - Assets/ProjectAssets/ModdedUI/BlendshapeSlider.prefab
 - Assets/ProjectAssets/ModdedUI/New Material.mat
+- Assets/ProjectAssets/ModdedUI/RainbowSliderTexture.png
 - Assets/ProjectAssets/ModdedUI/RegionHeadder.prefab
 - Assets/ProjectAssets/FemmployeeParts/Arms Longgloves.asset
 - Assets/ProjectAssets/FemmployeeParts/Hips Scarf.asset
@@ -260,7 +263,8 @@ Assets:
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_legs-fill.png
 - Assets/ProjectAssets/FemmployeeParts/Torso Scarf.asset
 - Assets/ProjectAssets/Models/mats/Hubber.mat
-- Assets/ProjectAssets/Models/mats/Silver.mat
+- Assets/ProjectAssets/ModdedUI/SliderTest.png
+- Assets/ProjectAssets/ModdedUI/GraySliderBar.png
 - Assets/ProjectAssets/FemmployeeParts/Helmet Hooded Dark.asset
 - Assets/ProjectAssets/ModdedUI/E5 5.png
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_helmet-outline.png

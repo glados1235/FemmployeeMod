@@ -9,6 +9,7 @@ using Unity.Netcode;
 using UnityEngine.InputSystem;
 using LethalCompanyInputUtils.Api;
 using FemmployeeMod;
+using System.IO;
 
 namespace ModelReplacement
 {
@@ -23,16 +24,15 @@ namespace ModelReplacement
         public static ManualLogSource mls;
         public static ConfigFile config;
         public static GameObject networkedSettingsGo;
+        public static string saveFilePath = Path.Combine(Paths.BepInExRootPath, "plugins", "FemmployeeMod", "FemmployeeSaveData.json");
 
-        public static ConfigEntry<bool> enableModelForAllSuits { get; private set; }
-        public static ConfigEntry<bool> enableModelAsDefault { get; private set; }
-        public static ConfigEntry<string> suitNamesToEnableModel { get; private set; }
+        public static ConfigEntry<bool> useSaveFileFormatting;
+
+
 
         private static void InitConfig()
         {
-            enableModelForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Model for all Suits", false, "Enable to model replace every suit. Set to false to specify suits");
-            enableModelAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Model as default", false, "Enable to model replace every suit that hasn't been otherwise registered.");
-            suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
+            useSaveFileFormatting = config.Bind<bool>("Femmployee Mod Settings", "Use Save File formatting", false, "Enable for save file debugging. makes the mod generate the JSON with Formatting.Indented true.");
         }
         private void Awake()
         {
@@ -101,7 +101,6 @@ namespace ModelReplacement
         [HarmonyPostfix]
         static void UICreationPatch()
         {
-            NetworkManager.Singleton.NetworkConfig.Prefabs.Prefabs.Do(obj => FemmployeeModBase.mls.LogWarning(obj.Prefab.name));
             var bundle = Assets.MainAssetBundle;
             GameObject prefab = bundle.LoadAsset<GameObject>("ModdedUI.prefab");
             GameObject.Instantiate(prefab);
@@ -111,8 +110,22 @@ namespace ModelReplacement
 
     public class InputClass : LcInputActions
     {
-        [InputAction("<Keyboard>/g", Name = "Femmployee UI")]
+        [InputAction("<Keyboard>/backslash", Name = "Femmployee UI")]
         public InputAction FemmployeeUIToggle { get; set; }
+    }
+
+    public class NetworkMaterialProperties : INetworkSerializable
+    {
+        public Color colorValue;
+        public float metallicValue;
+        public float smoothnessValue;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref colorValue);
+            serializer.SerializeValue(ref metallicValue);
+            serializer.SerializeValue(ref smoothnessValue);
+        }
     }
 
 }

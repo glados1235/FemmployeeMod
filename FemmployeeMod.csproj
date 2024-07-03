@@ -78,6 +78,6 @@
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="netcode-patch &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
-    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(LethalCompanyPath)\BepInEx\plugins&quot;  &#xD;&#xA;" />
+    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(LethalCompanyPath)\BepInEx\plugins\FemmployeeMod&quot;  &#xD;&#xA;" />
   </Target>
 </Project>

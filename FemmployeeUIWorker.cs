@@ -16,9 +16,18 @@ namespace FemmployeeMod
         public bool shouldDisable;
         public GameObject[] disableList;
         public Slider shapeSlider;
+        public float DefaultSliderMax = 100;
         public string[] blendshapes;
+        public int mode;
 
 
+        public void OnDestroy()
+        {
+            if(shapeSlider != null)
+            {
+                configUI.AllSliders[objectID].Remove(this);
+            }
+        }
         
         public void ButtonTrigger()
         {
@@ -33,7 +42,12 @@ namespace FemmployeeMod
 
         public void SliderValueChange(float value)
         {
-            configUI.femmployeeSuitPreview.SetBlendshape(objectID, shapeSlider.value, blendshapes);
+            configUI.femmployeeSuitPreview.SetBlendshape(objectID, shapeSlider.value, blendshapes, configUI.localFemmployeeGo.GetComponent<Femmployee>());
+        }
+
+        public void ToggleInteract(bool toggle)
+        {
+            configUI.ToggleTask(this);
         }
     }
 }
