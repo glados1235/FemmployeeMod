@@ -12,6 +12,10 @@ using System.Collections;
 using static UnityEngine.UI.GridLayoutGroup;
 using UnityEngine.VFX;
 using BepInEx.Configuration;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System;
+using static FemmployeeMod.FemmployeeSuitPreview;
 
 
 namespace FemmployeeMod
@@ -30,7 +34,7 @@ namespace FemmployeeMod
         public Slider previewSpinSlider;
         public GameObject menuRoot;
         public GameObject mainMenu;
-        public GameObject errorMenu;
+        public GameObject settingsMenu;
         public int sliderMultiplier;
         public bool isMultiplierEnabled;
         public static FemmployeeConfigUI instance;
@@ -117,67 +121,81 @@ namespace FemmployeeMod
         {
             foreach (Transform child in sender.targetElement.transform)
             {
-                Destroy(child.gameObject);   
+                Destroy(child.gameObject);
             }
 
             AllSliders[sender.objectID].Clear();
 
-            string[] shapes = new string[femmployeeSuitPreview.settings.bodyRegionMeshRenderers[sender.objectID].sharedMesh.blendShapeCount];
+            List<BlendshapeData> allShapes = new List<BlendshapeData>();
 
             GameObject sliderGO = (GameObject)Assets.MainAssetBundle.LoadAsset("BlendshapeSlider.prefab");
 
             GameObject blendshapeSlidersGO = sender.targetElement;
 
+            string[] regionSuffix = { "Head", "Chest", "Arms", "Waist", "Leg" };
 
-            for (int i = 0; i < femmployeeSuitPreview.settings.bodyRegionMeshRenderers[sender.objectID].sharedMesh.blendShapeCount; i++)
+            foreach (var smr in femmployeeSuitPreview.settings.bodyRegionMeshRenderers)
             {
-                shapes[i] = femmployeeSuitPreview.settings.bodyRegionMeshRenderers[sender.objectID].sharedMesh.GetBlendShapeName(i);
-            }
+                int regionID = Array.IndexOf(femmployeeSuitPreview.settings.bodyRegionMeshRenderers, smr);
 
-            Dictionary<int, List<string>> shapeGroupsBySuffix = new Dictionary<int, List<string>>();
-
-            foreach (string shapeName in shapes)
-            {
-                string[] parts = shapeName.Split('_');
-
-                if (parts.Length > 1 && int.TryParse(parts[1], out int suffix))
+                for (int i = 0; i < smr.sharedMesh.blendShapeCount; i++)
                 {
+                    string shapeName = smr.sharedMesh.GetBlendShapeName(i);
+                    string[] parts = shapeName.Split('_');
 
-                    if (!shapeGroupsBySuffix.ContainsKey(suffix))
+                    if (parts.Length > 2 && int.TryParse(parts[1], out int suffix) && parts[2] == regionSuffix[sender.objectID])   
                     {
-
-                        shapeGroupsBySuffix.Add(suffix, new List<string>());
+                        allShapes.Add(new BlendshapeData
+                        {
+                            OriginalRegionID = regionID,
+                            ControllingRegionID = sender.objectID,
+                            BlendshapeName = shapeName
+                        });
+                        
                     }
-
-                    shapeGroupsBySuffix[suffix].Add(shapeName);
                 }
             }
 
-            // Iterate through the shapeGroupsBySuffix dictionary
+            foreach (var t in allShapes)
+            {
+                FemmployeeModBase.mls.LogWarning($"{t.OriginalRegionID}  {t.ControllingRegionID}  {t.BlendshapeName}");
+            }
+
+            var shapeGroupsBySuffix = allShapes
+                .GroupBy(shape => shape.BlendshapeName.Split('_')[1])
+                .ToDictionary(g => int.Parse(g.Key), g => g.ToList());
+
             foreach (var group in shapeGroupsBySuffix)
             {
 
+                
                 GameObject slider = Instantiate(sliderGO, blendshapeSlidersGO.transform);
 
                 FemmployeeUIWorker worker = slider.GetComponent<FemmployeeUIWorker>();
-                
 
                 worker.configUI = this;
                 worker.blendshapes = group.Value.ToArray();
                 worker.shapeSlider.onValueChanged.AddListener(delegate { worker.SliderValueChange(1f); });
                 worker.objectID = sender.objectID;
                 worker.shapeSlider.maxValue = worker.DefaultSliderMax * sliderMultiplier;
-                worker.shapeSlider.value = femmployeeSuitPreview.settings.bodyRegionMeshRenderers[worker.objectID].GetBlendShapeWeight(group.Key);
-                worker.targetElement.GetComponent<TMP_Text>().text = $"{group.Value[0]}";
+
+                int shapeIndex = femmployeeSuitPreview.settings.bodyRegionMeshRenderers[group.Value[0].OriginalRegionID].sharedMesh.GetBlendShapeIndex(group.Value[0].BlendshapeName);
+                FemmployeeModBase.mls.LogMessage($"the shape Index of group {group.Key} is {shapeIndex} here more data kek {group.Value[0].BlendshapeName}");
+                worker.shapeSlider.value = femmployeeSuitPreview.settings.bodyRegionMeshRenderers[worker.objectID].GetBlendShapeWeight(shapeIndex);
+
+                string originalText = group.Value[0].BlendshapeName;
+                string modifiedText = Regex.Replace(originalText, @"_.*$", "");
+
+                worker.targetElement.GetComponent<TMP_Text>().text = modifiedText;
+
                 slider.name = $"BlendshapeSlider_{group.Key}";
-                for(int i = 0; i < 5; i++)
-                {
-                    if(worker.objectID == i)
-                    {
-                        AllSliders[i].Add(worker);
-                    }
-                }
+                AllSliders[sender.objectID].Add(worker);
             }
+        }
+
+        public void OnDestroy()
+        {
+            FemmployeeModBase.InputActionsInstance.FemmployeeUIToggle.performed -= FemmployeeUIToggle;
         }
 
         public void SetupKeybindCallbacks() 
@@ -188,23 +206,18 @@ namespace FemmployeeMod
         public void FemmployeeUIToggle(InputAction.CallbackContext UIOpenContext)
         {
             if (!UIOpenContext.performed) return;
-            isUIOpen = !isUIOpen;
-            menuRoot.SetActive(isUIOpen);
-            Cursor.lockState = isUIOpen ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = isUIOpen;
-            GameNetworkManager.Instance.localPlayerController.disableLookInput = isUIOpen;
-            GameNetworkManager.Instance.localPlayerController.inTerminalMenu = isUIOpen;
-            if (!GameNetworkManager.Instance.localPlayerController.TryGetComponent<Femmployee>(out _))
+            if (GameNetworkManager.Instance.localPlayerController.TryGetComponent<Femmployee>(out _))
             {
-                mainMenu.SetActive(false);
-                errorMenu.SetActive(true);
-            }
-            else
-            {
+                isUIOpen = !isUIOpen;
+                menuRoot.SetActive(isUIOpen);
                 mainMenu.SetActive(true);
-                errorMenu.SetActive(false);
-            }
+                settingsMenu.SetActive(false);
 
+                Cursor.lockState = isUIOpen ? CursorLockMode.None : CursorLockMode.Locked;
+                Cursor.visible = isUIOpen;
+                GameNetworkManager.Instance.localPlayerController.disableLookInput = isUIOpen;
+                GameNetworkManager.Instance.localPlayerController.inTerminalMenu = isUIOpen;
+            }
         }
 
         public void ApplyChanges()
@@ -270,10 +283,12 @@ namespace FemmployeeMod
 
         }
 
-        public void SendColorData(FemmployeeUIMaterialSettings uIMaterialSettings)
-        {
-            femmployeeSuitPreview.SetMaterialSettings(uIMaterialSettings.colorValue, uIMaterialSettings.metallicValue, uIMaterialSettings.smoothnessValue, uIMaterialSettings.materialName);
-            FemmployeeModBase.mls.LogWarning($"{uIMaterialSettings.colorValue} {uIMaterialSettings.metallicValue} {uIMaterialSettings.smoothnessValue} {uIMaterialSettings.materialName}");
+        public void SendColorData()
+        { 
+
+            femmployeeSuitPreview.SetMaterialSettings(suitMaterialSettings.colorValue, suitMaterialSettings.metallicValue, suitMaterialSettings.smoothnessValue, skinMaterialSettings.colorValue, skinMaterialSettings.metallicValue, skinMaterialSettings.smoothnessValue, localFemmployeeGo.GetComponent<Femmployee>());
         }
+
+
     }
 }

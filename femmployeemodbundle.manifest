@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2407862140
+CRC: 279561682
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 04365982ea86ea13fc2e7a82b0021443
+    Hash: e4d0822aa25b9226247531a90db645a1
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7ea87403106ce0cc7adfe66323a80d3d
+    Hash: 238f0d24bb1dc6d03b5a106784bbed58
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 04365982ea86ea13fc2e7a82b0021443
+    Hash: e4d0822aa25b9226247531a90db645a1
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -110,6 +110,8 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
 - AssemblyName: Unity.Netcode.Runtime
+  ClassName: Unity.Netcode.NetworkVariable`1[ModelReplacement.NetworkMaterialProperties]
+- AssemblyName: Unity.Netcode.Runtime
   ClassName: Unity.Netcode.NetworkVariable`1[System.Boolean]
 - AssemblyName: Unity.Netcode.Runtime
   ClassName: Unity.Netcode.NetworkVariable`1[System.Int32]
@@ -186,10 +188,11 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.Toggle/ToggleEvent
 Assets:
+- Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/PreviewIdle.anim
 - Assets/ProjectAssets/ModdedUI/SliderBodyRainbowGradient.png
-- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_torso-outline.png
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_slider-fill.png
 - Assets/ProjectAssets/FemmployeeParts/Helmet Magical.asset
+- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_torso-outline.png
 - Assets/ProjectAssets/Models/mats/Silver.mat
 - Assets/ProjectAssets/Models/TheFemmployee.fbx
 - Assets/ProjectAssets/NetworkedSettings.prefab
@@ -228,12 +231,13 @@ Assets:
 - Assets/ProjectAssets/ModdedUI/SliderBody.png
 - Assets/ProjectAssets/ModdedUI/PlayerPreviewRT.renderTexture
 - Assets/ProjectAssets/ModdedUI/UIElements/FullSprite.png
-- Assets/ProjectAssets/Models/mats/Yello.mat
+- Assets/ProjectAssets/Models/mats/Tubes.mat
 - Assets/ProjectAssets/FemmployeeParts/Helmet Gas.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_waist-outline.png
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_slider-outline.png
 - Assets/ProjectAssets/FemmployeeParts/Hips Underwear.asset
 - Assets/ProjectAssets/Models/mats/Leather.mat
+- Assets/ProjectAssets/Models/mats/Yello.mat
 - Assets/ProjectAssets/FemmployeeParts/Default Arms.asset
 - Assets/ProjectAssets/ModdedUI/RGBSliders.png
 - Assets/ModelReplacementSDK/AssetsToBuild/Femmployee.prefab
@@ -245,6 +249,7 @@ Assets:
 - Assets/ProjectAssets/FemmployeeParts/Torso Unzipped.asset
 - Assets/ProjectAssets/ModdedUI/BlendshapeSlider.prefab
 - Assets/ProjectAssets/ModdedUI/New Material.mat
+- Assets/ProjectAssets/Models/mats/Skin.mat
 - Assets/ProjectAssets/ModdedUI/RainbowSliderTexture.png
 - Assets/ProjectAssets/ModdedUI/RegionHeadder.prefab
 - Assets/ProjectAssets/FemmployeeParts/Arms Longgloves.asset
@@ -258,7 +263,6 @@ Assets:
 - Assets/ProjectAssets/ModdedUI/UIFoldoutClosed.png
 - Assets/ProjectAssets/FemmployeeParts/Hips Skirt Med.asset
 - Assets/ProjectAssets/ModdedUI/ModdedUI.prefab
-- Assets/ProjectAssets/Models/mats/Tubing.mat
 - Assets/ProjectAssets/Models/mats/Bombox.mat
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_legs-fill.png
 - Assets/ProjectAssets/FemmployeeParts/Torso Scarf.asset

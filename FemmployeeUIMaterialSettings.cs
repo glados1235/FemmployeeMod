@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ModelReplacement;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,31 +20,30 @@ namespace FemmployeeMod
         public float metallicValue;
         public float smoothnessValue;
 
-        public Color defaultColorValue = new Color(0.231f, 0.78f, 0);
+        public Color defaultColorValue;
         public float defaultMetallicValue = 0;
         public float defaultSmoothnessValue = 0;
 
         public string materialName;
-
 
         public void SetColorValue(float value)
         {
             colorValue.r = RGBSliders[0].value;
             colorValue.g = RGBSliders[1].value;
             colorValue.b = RGBSliders[2].value;
-            localFemmployeeConfigUI.SendColorData(this);
+            localFemmployeeConfigUI.SendColorData();
         }
 
         public void SetMetallicValue(float value)
         {
             metallicValue = metallicSlider.value;
-            localFemmployeeConfigUI.SendColorData(this);
+            localFemmployeeConfigUI.SendColorData();
         }
 
         public void SetSmoothnessSlider(float value)
         {
             smoothnessValue = smoothnessSlider.value;
-            localFemmployeeConfigUI.SendColorData(this);
+            localFemmployeeConfigUI.SendColorData();
         }
 
 

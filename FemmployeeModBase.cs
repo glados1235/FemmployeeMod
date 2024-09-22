@@ -13,7 +13,7 @@ using System.IO;
 
 namespace ModelReplacement
 {
-    [BepInPlugin("com.TiltedHat.FemmployeeMod", "Femmployee Mod", "0.1.0")]
+    [BepInPlugin("com.TiltedHat.FemmployeeMod", "Femmployee Mod", "1.0.2")]
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("x753.More_Suits", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.rune580.LethalCompanyInputUtils", BepInDependency.DependencyFlags.HardDependency)]
@@ -24,7 +24,7 @@ namespace ModelReplacement
         public static ManualLogSource mls;
         public static ConfigFile config;
         public static GameObject networkedSettingsGo;
-        public static string saveFilePath = Path.Combine(Paths.BepInExRootPath, "plugins", "FemmployeeMod", "FemmployeeSaveData.json");
+        public static string saveFilePath = Path.Combine(Paths.BepInExRootPath, "plugins", "TiltedTomb-The_Femmployee_Mod", "FemmployeeSaveData.json");
 
         public static ConfigEntry<bool> useSaveFileFormatting;
 

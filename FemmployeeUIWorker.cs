@@ -17,7 +17,7 @@ namespace FemmployeeMod
         public GameObject[] disableList;
         public Slider shapeSlider;
         public float DefaultSliderMax = 100;
-        public string[] blendshapes;
+        public BlendshapeData[] blendshapes;
         public int mode;
 
 

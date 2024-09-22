@@ -45,7 +45,7 @@ namespace FemmployeeMod
             settings.bodyRegionMeshRenderers[4].sharedMesh = playerFemmployee.settings.partsList[4][playerFemmployee.settings.networkedSettings.legSync].mesh;
             settings.bodyRegionMeshRenderers[4].materials = playerFemmployee.settings.partsList[4][playerFemmployee.settings.networkedSettings.legSync].materials;
 
-            NetworkList<float>[] blendshapeValuesArrays = new NetworkList<float>[]
+            NetworkList<BlendshapeValuePair>[] blendshapeValuesArrays = new NetworkList<BlendshapeValuePair>[]
             {
                 playerFemmployee.settings.networkedSettings.headBlendshapeValues,
                 playerFemmployee.settings.networkedSettings.chestBlendshapeValues,
@@ -54,20 +54,44 @@ namespace FemmployeeMod
                 playerFemmployee.settings.networkedSettings.legsBlendshapeValues
             };
 
-            
+
 
             for (int i = 0; i < 5; i++)
             {
                 SkinnedMeshRenderer skinnedMeshRenderer = settings.bodyRegionMeshRenderers[i].GetComponent<SkinnedMeshRenderer>();
-                
+
                 if (skinnedMeshRenderer != null && skinnedMeshRenderer.sharedMesh.blendShapeCount > 0)
                 {
                     for (int shapeID = 0; shapeID < blendshapeValuesArrays[i].Count; shapeID++)
                     {
-                        skinnedMeshRenderer.SetBlendShapeWeight(shapeID, blendshapeValuesArrays[i][shapeID]);
+                        skinnedMeshRenderer.SetBlendShapeWeight(i, blendshapeValuesArrays[i][shapeID].ShapeValue);
                     }
-                } 
+                }
             }
+
+            foreach (var SMR in settings.bodyRegionMeshRenderers)
+            {
+                foreach (var material in SMR.materials)
+                {
+                    if (material.name == "Suit (Instance)")
+                    {
+                        material.color = playerFemmployee.settings.networkedSettings.suitMaterialValues.Value.colorValue;
+                        material.SetFloat("_Metallic", playerFemmployee.settings.networkedSettings.suitMaterialValues.Value.metallicValue);
+                        material.SetFloat("_Smoothness", playerFemmployee.settings.networkedSettings.suitMaterialValues.Value.smoothnessValue);
+                    }
+                }
+
+                foreach (var material in SMR.materials)
+                {
+                    if (material.name == "Skin (Instance)")
+                    {
+                        material.color = playerFemmployee.settings.networkedSettings.skinMaterialValues.Value.colorValue;
+                        material.SetFloat("_Metallic", playerFemmployee.settings.networkedSettings.skinMaterialValues.Value.metallicValue);
+                        material.SetFloat("_Smoothness", playerFemmployee.settings.networkedSettings.skinMaterialValues.Value.smoothnessValue);
+                    }
+                }
+            }
+
         }
 
         public void SetPreviewRegion(int dropdownID, string selectionKeyName, Femmployee playerFemmployee)
@@ -76,6 +100,8 @@ namespace FemmployeeMod
             settings.bodyRegionMeshRenderers[dropdownID].sharedMesh = playerFemmployee.settings.previewBodyParts[dropdownID].mesh;
 
             settings.bodyRegionMeshRenderers[dropdownID].materials = playerFemmployee.settings.previewBodyParts[dropdownID].materials;
+
+
 
             if (Tools.CheckIsServer())
             {
@@ -105,82 +131,182 @@ namespace FemmployeeMod
             {
                 playerFemmployee.settings.networkedSettings.SetNetworkVarServerRpc(dropdownID, selectionKeyName);
             }
+
+            SetMaterialSettings(playerFemmployee.settings.networkedSettings.suitMaterialValues.Value.colorValue, playerFemmployee.settings.networkedSettings.suitMaterialValues.Value.metallicValue, playerFemmployee.settings.networkedSettings.suitMaterialValues.Value.smoothnessValue,
+                playerFemmployee.settings.networkedSettings.skinMaterialValues.Value.colorValue, playerFemmployee.settings.networkedSettings.skinMaterialValues.Value.metallicValue, playerFemmployee.settings.networkedSettings.skinMaterialValues.Value.smoothnessValue, playerFemmployee);
         }
 
-        public void SetBlendshape(int id, float value, string[] blendshapes, Femmployee playerFemmployee)
+        public void SetBlendshape(int id, float value, BlendshapeData[] blendshapes, Femmployee playerFemmployee)
         {
-            float[] blendshapeValues = new float[blendshapes.Length];
+            // Separate lists, initialized with sizes matching the blendshapes for each specific region
+            List<BlendshapeValuePair> headBlendshapeValues = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> chestBlendshapeValues = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> armsBlendshapeValues = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> waistBlendshapeValues = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> legsBlendshapeValues = new List<BlendshapeValuePair>();
+
             for (int i = 0; i < blendshapes.Length; i++)
             {
-                int shapeID = settings.bodyRegionMeshRenderers[id].sharedMesh.GetBlendShapeIndex(blendshapes[i]);
-                settings.bodyRegionMeshRenderers[id].SetBlendShapeWeight(shapeID, value);
-                blendshapeValues[i] = settings.bodyRegionMeshRenderers[id].GetBlendShapeWeight(shapeID);
-            }
+                BlendshapeData blendshapeData = blendshapes[i];
+                int originalRegionID = blendshapeData.OriginalRegionID;
 
-            // Update network variables with the new blendshape values if on the server or request server to update blendshape values if on the client
-            if (Tools.CheckIsServer())
-            {
-                Action<NetworkList<float>> clearList = list =>
+                // Get the shape ID based on the blendshape name within the correct original region
+                int shapeId = settings.bodyRegionMeshRenderers[originalRegionID].sharedMesh.GetBlendShapeIndex(blendshapeData.BlendshapeName);
+
+                if (shapeId != -1)
                 {
-                    while (list.Count > 0)
+                    // Set the blendshape weight for the region
+                    settings.bodyRegionMeshRenderers[originalRegionID].SetBlendShapeWeight(shapeId, value);
+
+                    // Create a new BlendshapeValuePair with the shape ID and value
+                    BlendshapeValuePair valuePair = new BlendshapeValuePair(value, shapeId);
+
+                    // Add the value to the correct region's blendshape list
+                    switch (originalRegionID)
                     {
-                        list.RemoveAt(0);
+                        case 0:
+                            headBlendshapeValues.Add(valuePair);
+                            break;
+                        case 1:
+                            chestBlendshapeValues.Add(valuePair);
+                            break;
+                        case 2:
+                            armsBlendshapeValues.Add(valuePair);
+                            break;
+                        case 3:
+                            waistBlendshapeValues.Add(valuePair);
+                            break;
+                        case 4:
+                            legsBlendshapeValues.Add(valuePair);
+                            break;
+                        default:
+                            FemmployeeModBase.mls.LogWarning("Invalid region ID");
+                            break;
                     }
-                };
 
-                Action<NetworkList<float>, float[]> addValuesToList = (list, values) =>
-                {
-                    foreach (var value in values)
+                    // Networking part
+                    if (Tools.CheckIsServer())
                     {
-                        list.Add(value);
-                    }
-                };
+                        void ClearList(NetworkList<BlendshapeValuePair> list)
+                        {
+                            while (list.Count > 0)
+                            {
+                                list.RemoveAt(0);
+                            }
+                        }
 
-                switch (id)
-                {
-                    case 0:
-                        clearList(playerFemmployee.settings.networkedSettings.headBlendshapeValues);
-                        addValuesToList(playerFemmployee.settings.networkedSettings.headBlendshapeValues, blendshapeValues);
-                        break;
-                    case 1:
-                        clearList(playerFemmployee.settings.networkedSettings.chestBlendshapeValues);
-                        addValuesToList(playerFemmployee.settings.networkedSettings.chestBlendshapeValues, blendshapeValues);
-                        break;
-                    case 2:
-                        clearList(playerFemmployee.settings.networkedSettings.armsBlendshapeValues);
-                        addValuesToList(playerFemmployee.settings.networkedSettings.armsBlendshapeValues, blendshapeValues);
-                        break;
-                    case 3:
-                        clearList(playerFemmployee.settings.networkedSettings.waistBlendshapeValues);
-                        addValuesToList(playerFemmployee.settings.networkedSettings.waistBlendshapeValues, blendshapeValues);
-                        break;
-                    case 4:
-                        clearList(playerFemmployee.settings.networkedSettings.legsBlendshapeValues);
-                        addValuesToList(playerFemmployee.settings.networkedSettings.legsBlendshapeValues, blendshapeValues);
-                        break;
-                    default:
-                        FemmployeeModBase.mls.LogWarning("Invalid dropdown ID");
-                        return;
+                        void AddValuesToList(NetworkList<BlendshapeValuePair> list, List<BlendshapeValuePair> values)
+                        {
+                            foreach (var blendValue in values)
+                            {
+                                list.Add(blendValue);
+                            }
+                        }
+
+                        // Clear and add values for the specific region's networked list
+                        switch (originalRegionID)
+                        {
+                            case 0:
+                                ClearList(playerFemmployee.settings.networkedSettings.headBlendshapeValues);
+                                AddValuesToList(playerFemmployee.settings.networkedSettings.headBlendshapeValues, headBlendshapeValues);
+                                break;
+
+                            case 1:
+                                ClearList(playerFemmployee.settings.networkedSettings.chestBlendshapeValues);
+                                AddValuesToList(playerFemmployee.settings.networkedSettings.chestBlendshapeValues, chestBlendshapeValues);
+                                break;
+
+                            case 2:
+                                ClearList(playerFemmployee.settings.networkedSettings.armsBlendshapeValues);
+                                AddValuesToList(playerFemmployee.settings.networkedSettings.armsBlendshapeValues, armsBlendshapeValues);
+                                break;
+
+                            case 3:
+                                ClearList(playerFemmployee.settings.networkedSettings.waistBlendshapeValues);
+                                AddValuesToList(playerFemmployee.settings.networkedSettings.waistBlendshapeValues, waistBlendshapeValues);
+                                break;
+
+                            case 4:
+                                ClearList(playerFemmployee.settings.networkedSettings.legsBlendshapeValues);
+                                AddValuesToList(playerFemmployee.settings.networkedSettings.legsBlendshapeValues, legsBlendshapeValues);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // Send the blendshape data to the server, using only the relevant region's values
+                        (float[] shapeValues, int[] shapeIDs) = ConvertBlendshapeListToArrays(originalRegionID switch
+                        {
+                            0 => headBlendshapeValues,
+                            1 => chestBlendshapeValues,
+                            2 => armsBlendshapeValues,
+                            3 => waistBlendshapeValues,
+                            4 => legsBlendshapeValues,
+                            _ => new List<BlendshapeValuePair>()
+                        });
+
+                        playerFemmployee.settings.networkedSettings.SetBlendshapeNetworkVarServerRpc(originalRegionID, shapeValues, shapeIDs);
+                    }
                 }
             }
-            else { playerFemmployee.settings.networkedSettings.SetBlendshapeNetworkVarServerRpc(id, blendshapeValues); }
         }
 
-        public void SetMaterialSettings(Color color, float metallicValue, float smoothnessValue, string materialName)
+        private (float[] shapeValues, int[] shapeIDs) ConvertBlendshapeListToArrays(List<BlendshapeValuePair> blendshapeList)
         {
-            foreach(var SMR in settings.bodyRegionMeshRenderers)
+            int count = blendshapeList.Count;
+            float[] shapeValues = new float[count];
+            int[] shapeIDs = new int[count];
+
+            for (int i = 0; i < count; i++)
             {
-                foreach(var material in SMR.materials)
+                shapeValues[i] = blendshapeList[i].ShapeValue;
+                shapeIDs[i] = blendshapeList[i].ShapeID;
+            }
+
+            return (shapeValues, shapeIDs);
+        }
+
+
+        public void SetMaterialSettings(Color suitColorValue, float suitMetallicValue, float suitSmoothnessValue, Color skinColorValue, float skinMetallicValue, float skinSmoothnessValue, Femmployee playerFemmployee)
+        {
+
+            foreach (var SMR in settings.bodyRegionMeshRenderers)
+            {
+                foreach (var material in SMR.materials)
                 {
-                    if (material.name == materialName)
+                    if (material.name == "Suit (Instance)")
                     {
-                        material.color = color;
-                        material.SetFloat("_Metallic", metallicValue);
-                        material.SetFloat("_Smoothness", smoothnessValue);
+                        material.color = suitColorValue;
+                        material.SetFloat("_Metallic", suitMetallicValue);
+                        material.SetFloat("_Smoothness", suitSmoothnessValue);
+                    }
+
+                    if (material.name == "Skin (Instance)")
+                    {
+                        material.color = skinColorValue;
+                        material.SetFloat("_Metallic", skinMetallicValue);
+                        material.SetFloat("_Smoothness", skinSmoothnessValue);
                     }
                 }
+            }
+
+            if (Tools.CheckIsServer())
+            {
+                playerFemmployee.settings.networkedSettings.SetMaterialData(suitColorValue, suitMetallicValue, suitSmoothnessValue, skinColorValue, skinMetallicValue, skinSmoothnessValue);
+            }
+            else
+            {
+                playerFemmployee.settings.networkedSettings.SetMaterialDataServerRpc(suitColorValue, suitMetallicValue, suitSmoothnessValue, skinColorValue, skinMetallicValue, skinSmoothnessValue);
             }
         }
 
     }
+
+    public struct BlendshapeData
+    {
+        public int OriginalRegionID; // The region where the blendshape is located
+        public int ControllingRegionID; // The region that controls the blendshape (based on the slider)
+        public string BlendshapeName; // The full name of the blendshape
+    }
+
 }

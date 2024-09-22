@@ -33,9 +33,9 @@ namespace FemmployeeMod
             Dictionary<string, float> keyValuePairs = new Dictionary<string, float>();
             foreach (var slider in sliders)
             {
-                if (!keyValuePairs.ContainsKey(slider.blendshapes[0]))
+                if (!keyValuePairs.ContainsKey(slider.blendshapes[0].BlendshapeName))
                 {
-                    keyValuePairs.Add(slider.blendshapes[0], slider.shapeSlider.value);
+                    keyValuePairs.Add(slider.blendshapes[0].BlendshapeName, slider.shapeSlider.value);
                 }
             }
             return keyValuePairs;

@@ -69,14 +69,14 @@ namespace FemmployeeMod
         private NetworkVariable<FixedString64Bytes> _waistSync = new() { Value = "" };
         private NetworkVariable<FixedString64Bytes> _legSync = new() { Value = "" };
 
-        public NetworkList<float> headBlendshapeValues = new NetworkList<float>();
-        public NetworkList<float> chestBlendshapeValues = new NetworkList<float>();
-        public NetworkList<float> armsBlendshapeValues = new NetworkList<float>();
-        public NetworkList<float> waistBlendshapeValues = new NetworkList<float>();
-        public NetworkList<float> legsBlendshapeValues = new NetworkList<float>();
+        public NetworkList<BlendshapeValuePair> headBlendshapeValues = new NetworkList<BlendshapeValuePair>();
+        public NetworkList<BlendshapeValuePair> chestBlendshapeValues = new NetworkList<BlendshapeValuePair>();
+        public NetworkList<BlendshapeValuePair> armsBlendshapeValues = new NetworkList<BlendshapeValuePair>();
+        public NetworkList<BlendshapeValuePair> waistBlendshapeValues = new NetworkList<BlendshapeValuePair>();
+        public NetworkList<BlendshapeValuePair> legsBlendshapeValues = new NetworkList<BlendshapeValuePair>();
 
-        public NetworkVariable<NetworkMaterialProperties> suitMaterialValues = new NetworkVariable<NetworkMaterialProperties>() { Value = new NetworkMaterialProperties() };
-        public NetworkVariable<NetworkMaterialProperties> skinMaterialValues = new NetworkVariable<NetworkMaterialProperties>() { Value = new NetworkMaterialProperties() };
+        public NetworkVariable<NetworkMaterialProperties> suitMaterialValues = new NetworkVariable<NetworkMaterialProperties>();
+        public NetworkVariable<NetworkMaterialProperties> skinMaterialValues = new NetworkVariable<NetworkMaterialProperties>();
 
         public NetworkVariable<int> playerID;
         public NetworkVariable<bool> hasInitialized;
@@ -86,7 +86,12 @@ namespace FemmployeeMod
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            if (Tools.CheckIsServer()) { playerID.Value = -1; }
+            if (Tools.CheckIsServer()) 
+            { 
+                playerID.Value = -1;
+                suitMaterialValues.Value = new NetworkMaterialProperties();
+                skinMaterialValues.Value = new NetworkMaterialProperties();
+            }
             StartCoroutine(waitForIDSync());
         }
 
@@ -124,7 +129,7 @@ namespace FemmployeeMod
                 hasInitialized.Value = true;
             }
 
-            if (File.Exists(FemmployeeModBase.saveFilePath))
+            if (settings.controller == GameNetworkManager.Instance.localPlayerController && File.Exists(FemmployeeModBase.saveFilePath))
             {
                 LoadSuitData(SuitDataParser(File.ReadAllText(FemmployeeModBase.saveFilePath)));
             }
@@ -169,12 +174,10 @@ namespace FemmployeeMod
         {
             if (IsServer) 
             {
-                SetMaterialData(localUI.suitMaterialSettings.colorValue, localUI.suitMaterialSettings.metallicValue, localUI.suitMaterialSettings.smoothnessValue, localUI.skinMaterialSettings.colorValue, localUI.skinMaterialSettings.metallicValue, localUI.skinMaterialSettings.smoothnessValue);
                 ApplySettingsClientRpc();
             }
             else 
             {
-                SetMaterialDataServerRpc(localUI.suitMaterialSettings.colorValue, localUI.suitMaterialSettings.metallicValue, localUI.suitMaterialSettings.smoothnessValue, localUI.skinMaterialSettings.colorValue, localUI.skinMaterialSettings.metallicValue, localUI.skinMaterialSettings.smoothnessValue);
                 ApplySettingsServerRpc();
             }
         }
@@ -192,49 +195,68 @@ namespace FemmployeeMod
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void SetBlendshapeNetworkVarServerRpc(int id, float[] blendshapeValues)
+        public void SetBlendshapeNetworkVarServerRpc(int id, float[] shapeValues, int[] shapeIDs)
         {
-            Action<NetworkList<float>> clearList = list =>
+            FemmployeeModBase.mls.LogWarning($"debugging ShapeValues for regionID {id}");
+            foreach (var value in shapeValues)
+            {
+                FemmployeeModBase.mls.LogWarning($"{value}");
+            }
+            FemmployeeModBase.mls.LogWarning($" ");
+            FemmployeeModBase.mls.LogWarning($"debugging shapeIDs for regionID {id}");
+            foreach (var shapeID in shapeIDs)
+            {
+                FemmployeeModBase.mls.LogWarning($"{shapeID}");
+            }
+            FemmployeeModBase.mls.LogWarning($" ");
+            FemmployeeModBase.mls.LogWarning($" ");
+            FemmployeeModBase.mls.LogWarning($"|||||| NEW LINE |||||||");
+            FemmployeeModBase.mls.LogWarning($" ");
+            FemmployeeModBase.mls.LogWarning($" ");
+
+            void ClearList(NetworkList<BlendshapeValuePair> list)
             {
                 while (list.Count > 0)
                 {
                     list.RemoveAt(0);
                 }
-            };
+            }
 
-            Action<NetworkList<float>, float[]> addValuesToList = (list, values) =>
+            void AddValuesToList(NetworkList<BlendshapeValuePair> list, float[] values, int[] ids)
             {
-                foreach (var value in values)
+                for (int i = 0; i < values.Length; i++)
                 {
-                    list.Add(value);
+                    list.Add(new BlendshapeValuePair(values[i], ids[i]));
                 }
-            };
+            }
 
+            // Clear and add values for the specific region's networked list
             switch (id)
             {
                 case 0:
-                    clearList(headBlendshapeValues);
-                    addValuesToList(headBlendshapeValues, blendshapeValues);
+                    ClearList(headBlendshapeValues);
+                    AddValuesToList(headBlendshapeValues, shapeValues, shapeIDs);
                     break;
+
                 case 1:
-                    clearList(chestBlendshapeValues);
-                    addValuesToList(chestBlendshapeValues, blendshapeValues);
+                    ClearList(chestBlendshapeValues);
+                    AddValuesToList(chestBlendshapeValues, shapeValues, shapeIDs);
                     break;
+
                 case 2:
-                    clearList(armsBlendshapeValues);
-                    addValuesToList(armsBlendshapeValues, blendshapeValues);
+                    ClearList(armsBlendshapeValues);
+                    AddValuesToList(armsBlendshapeValues, shapeValues, shapeIDs);
                     break;
+
                 case 3:
-                    clearList(waistBlendshapeValues);
-                    addValuesToList(waistBlendshapeValues, blendshapeValues);
+                    ClearList(waistBlendshapeValues);
+                    AddValuesToList(waistBlendshapeValues, shapeValues, shapeIDs);
                     break;
+
                 case 4:
-                    clearList(legsBlendshapeValues);
-                    addValuesToList(legsBlendshapeValues, blendshapeValues);
+                    ClearList(legsBlendshapeValues);
+                    AddValuesToList(legsBlendshapeValues, shapeValues, shapeIDs);
                     break;
-                default:
-                    FemmployeeModBase.mls.LogWarning("Invalid dropdown ID");
-                    return;
             }
         }
 
@@ -247,13 +269,23 @@ namespace FemmployeeMod
 
         public void SetMaterialData(Color suitColorValue, float suitMetallicValue, float suitSmoothnessValue, Color skinColorValue, float skinMetallicValue, float skinSmoothnessValue)
         {
-            suitMaterialValues.Value.colorValue = suitColorValue;
-            suitMaterialValues.Value.metallicValue = suitMetallicValue;
-            suitMaterialValues.Value.smoothnessValue = suitSmoothnessValue;
+            NetworkMaterialProperties skinProperties = new NetworkMaterialProperties
+            {
+                colorValue = skinColorValue,
+                metallicValue = skinMetallicValue,
+                smoothnessValue = skinSmoothnessValue
+            };
 
-            skinMaterialValues.Value.colorValue = skinColorValue;
-            skinMaterialValues.Value.metallicValue = skinMetallicValue;
-            skinMaterialValues.Value.smoothnessValue = skinSmoothnessValue;
+            NetworkMaterialProperties suitProperties = new NetworkMaterialProperties
+            {
+                colorValue = suitColorValue,
+                metallicValue = suitMetallicValue,
+                smoothnessValue = suitSmoothnessValue
+            };
+
+            suitMaterialValues.Value = suitProperties;
+
+            skinMaterialValues.Value = skinProperties;
         }
 
         public void SaveSuitData()
@@ -269,6 +301,7 @@ namespace FemmployeeMod
                     if (sliderGroup.objectID == i) { regionSliderLists[i].Add(sliderGroup); }
                 }
             }
+            
 
             FemmployeeSaveData suitData = new FemmployeeSaveData
             {
@@ -287,9 +320,25 @@ namespace FemmployeeMod
                     { "Arms Sliders", Tools.RetriveSliderData(regionSliderLists[2]) },
                     { "Waist Sliders", Tools.RetriveSliderData(regionSliderLists[3]) },
                     { "Legs Sliders", Tools.RetriveSliderData(regionSliderLists[4]) }
-                },
+                }, 
                 MultiplierValue = localUI.sliderMultiplier,
-                Multiplier = localUI.isMultiplierEnabled
+                Multiplier = localUI.isMultiplierEnabled,
+                suitMaterialData = new MaterialData
+                {
+                    colorValueR = suitMaterialValues.Value.colorValue.r,
+                    colorValueG = suitMaterialValues.Value.colorValue.g,
+                    colorValueB = suitMaterialValues.Value.colorValue.b,
+                    metallicValue = suitMaterialValues.Value.metallicValue,
+                    smoothnessValue = suitMaterialValues.Value.smoothnessValue
+                },
+                skinMaterialData = new MaterialData
+                {
+                    colorValueR = skinMaterialValues.Value.colorValue.r,
+                    colorValueG = skinMaterialValues.Value.colorValue.g,
+                    colorValueB = skinMaterialValues.Value.colorValue.b,
+                    metallicValue = skinMaterialValues.Value.metallicValue,
+                    smoothnessValue = skinMaterialValues.Value.smoothnessValue
+                }
             };
 
             string jsonData = JsonConvert.SerializeObject(suitData, FemmployeeModBase.useSaveFileFormatting.Value ? Formatting.Indented : Formatting.None);
@@ -315,16 +364,7 @@ namespace FemmployeeMod
 
         public void LoadSuitData(FemmployeeSaveData suitData)
         {
-
-            if (!File.Exists(FemmployeeModBase.saveFilePath))
-            {
-                FemmployeeModBase.mls.LogWarning("Suit data file not found.");
-                return;
-            }
-
-            // Mapping of region dropdowns to their corresponding suit data parts
             string[] regions = { "HeadSync", "ChestSync", "ArmsSync", "WaistSync", "LegSync" };
-
 
             if (settings.controller == GameNetworkManager.Instance.localPlayerController)
             {
@@ -339,6 +379,18 @@ namespace FemmployeeMod
                 localUI.multiplierDropdown.value = suitData.MultiplierValue - 1;
                 localUI.multiplierToggle.isOn = suitData.Multiplier;
 
+                localUI.suitMaterialSettings.RGBSliders[0].value = suitData.suitMaterialData.colorValueR;
+                localUI.suitMaterialSettings.RGBSliders[1].value = suitData.suitMaterialData.colorValueG;
+                localUI.suitMaterialSettings.RGBSliders[2].value = suitData.suitMaterialData.colorValueB;
+                localUI.suitMaterialSettings.metallicSlider.value = suitData.suitMaterialData.metallicValue;
+                localUI.suitMaterialSettings.smoothnessSlider.value = suitData.suitMaterialData.smoothnessValue;
+
+                localUI.skinMaterialSettings.RGBSliders[0].value = suitData.skinMaterialData.colorValueR;
+                localUI.skinMaterialSettings.RGBSliders[1].value = suitData.skinMaterialData.colorValueG;
+                localUI.skinMaterialSettings.RGBSliders[2].value = suitData.skinMaterialData.colorValueB;
+                localUI.skinMaterialSettings.metallicSlider.value = suitData.skinMaterialData.metallicValue;
+                localUI.skinMaterialSettings.smoothnessSlider.value = suitData.skinMaterialData.smoothnessValue;
+
                 for (int i = 0; i < 5; i++)
                 {
                     string sliderKey = $"{regions[i].Replace("Sync", "")} Sliders";
@@ -347,7 +399,7 @@ namespace FemmployeeMod
                         if (slider.objectID == i)
                         {
                             slider.shapeSlider.maxValue = slider.DefaultSliderMax * suitData.MultiplierValue;
-                            slider.shapeSlider.value = suitData.SliderValues[sliderKey][slider.blendshapes[0]];
+                            slider.shapeSlider.value = suitData.SliderValues[sliderKey][slider.blendshapes[0].BlendshapeName];
                         }
                     }
                 }
@@ -360,6 +412,21 @@ namespace FemmployeeMod
                 armsSync = suitData.PartsList.ArmsSync;
                 waistSync = suitData.PartsList.WaistSync;
                 legSync = suitData.PartsList.LegSync;
+
+                Color suitColor = new Color
+                {
+                    r = suitData.suitMaterialData.colorValueR,
+                    g = suitData.suitMaterialData.colorValueG,
+                    b = suitData.suitMaterialData.colorValueB
+                };
+                Color skinColor = new Color
+                {
+                    r = suitData.skinMaterialData.colorValueR,
+                    g = suitData.skinMaterialData.colorValueG,
+                    b = suitData.skinMaterialData.colorValueB
+                };
+
+                SetMaterialData(suitColor, suitData.suitMaterialData.metallicValue, suitData.suitMaterialData.smoothnessValue, skinColor, suitData.skinMaterialData.metallicValue, suitData.skinMaterialData.smoothnessValue);
 
             }
             else
@@ -383,3 +450,63 @@ namespace FemmployeeMod
 
     }
 }
+
+[System.Serializable]
+public struct BlendshapeValuePair : INetworkSerializable, IEquatable<BlendshapeValuePair>
+{
+    public float ShapeValue;
+    public int ShapeID;
+
+    // Parameterized constructor for ease of use
+    public BlendshapeValuePair(float floatValue, int shapeID)
+    {
+        ShapeValue = floatValue;
+        ShapeID = shapeID;
+    }
+
+    // Serialization method
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref ShapeValue);
+        serializer.SerializeValue(ref ShapeID);
+    }
+
+    // Implement IEquatable
+    public bool Equals(BlendshapeValuePair other)
+    {
+        return ShapeValue.Equals(other.ShapeValue) && ShapeID.Equals(other.ShapeID);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is BlendshapeValuePair)
+        {
+            return Equals((BlendshapeValuePair)obj);
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            int hash = 17;
+            hash = hash * 23 + ShapeValue.GetHashCode();
+            hash = hash * 23 + ShapeID.GetHashCode();
+            return hash;
+        }
+    }
+
+    // Override the equality operators
+    public static bool operator ==(BlendshapeValuePair left, BlendshapeValuePair right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(BlendshapeValuePair left, BlendshapeValuePair right)
+    {
+        return !(left == right);
+    }
+}
+
+
