@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using FemmployeeMod.UIScripts;
 using ModelReplacement;
 using Newtonsoft.Json;
 using System;
@@ -62,7 +63,7 @@ namespace FemmployeeMod
                 _legSync.Value = new FixedString64Bytes(value);
             }
         }
-
+          
         private NetworkVariable<FixedString64Bytes> _headSync = new() { Value = "" };
         private NetworkVariable<FixedString64Bytes> _chestSync = new() { Value = "" };
         private NetworkVariable<FixedString64Bytes> _armsSync = new() { Value = "" };
@@ -194,72 +195,225 @@ namespace FemmployeeMod
             StartOfRound.Instance.allPlayerScripts[playerID.Value].GetComponent<Femmployee>().ApplySwapRegions();
         }
 
+        public void SetBlendshapeValue(float value, BlendshapeData[] blendshapes)
+        {
+            // Separate lists, initialized with sizes matching the blendshapes for each specific region
+            List<BlendshapeValuePair> headBlendshapeValuePairs = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> chestBlendshapeValuePairs = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> armsBlendshapeValuePairs = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> waistBlendshapeValuePairs = new List<BlendshapeValuePair>();
+            List<BlendshapeValuePair> legsBlendshapeValuePairs = new List<BlendshapeValuePair>();
+
+            for (int i = 0; i < blendshapes.Length; i++)
+            {
+                BlendshapeData blendshapeData = blendshapes[i];
+                int originalRegionID = blendshapeData.OriginalRegionID;
+
+                // Get the shape ID based on the blendshape name within the correct original region
+                int shapeId = settings.bodyRegionMeshRenderers[originalRegionID].sharedMesh.GetBlendShapeIndex(blendshapeData.BlendshapeName);
+
+                if (shapeId != -1)
+                {
+                    // Create a new BlendshapeValuePair with the shape ID and value
+                    BlendshapeValuePair valuePair = new BlendshapeValuePair(value, shapeId);
+
+                    // Add the value to the correct region's blendshape list
+                    switch (originalRegionID)
+                    {
+                        case 0:
+                            headBlendshapeValuePairs.Add(valuePair);
+                            break;
+                        case 1:
+                            chestBlendshapeValuePairs.Add(valuePair);
+                            break;
+                        case 2:
+                            armsBlendshapeValuePairs.Add(valuePair);
+                            break;
+                        case 3:
+                            waistBlendshapeValuePairs.Add(valuePair);
+                            break;
+                        case 4:
+                            legsBlendshapeValuePairs.Add(valuePair);
+                            break;
+                        default:
+                            FemmployeeModBase.mls.LogWarning("Invalid region ID");
+                            break;
+                    }
+
+                    if (Tools.CheckIsServer())
+                    {
+                        void AddValuesToList(NetworkList<BlendshapeValuePair> settingsList, List<BlendshapeValuePair> blendshapeValues)
+                        {
+                            // Iterate through new blendshapes values to merge or append
+                            foreach (var valuePair in blendshapeValues)
+                            {
+                                bool shapeExists = false;
+
+                                for (int j = 0; j < settingsList.Count; j++)
+                                {
+                                    if (settingsList[j].ShapeID == valuePair.ShapeID)
+                                    {
+                                        // If shape exists, overwrite its value
+                                        settingsList[j] = valuePair;
+                                        shapeExists = true;
+                                        break;
+                                    }
+                                }
+
+                                // If shape does not exist, add the new value pair
+                                if (!shapeExists)
+                                {
+                                    settingsList.Add(valuePair);
+                                }
+                            }
+                        }
+
+                        // Update values for the specific region's networked list
+                        switch (originalRegionID)
+                        {
+                            case 0:
+                                AddValuesToList(headBlendshapeValues, headBlendshapeValuePairs);
+                                break;
+
+                            case 1:
+                                AddValuesToList(chestBlendshapeValues, chestBlendshapeValuePairs);
+                                break;
+
+                            case 2:
+                                AddValuesToList(armsBlendshapeValues, armsBlendshapeValuePairs);
+                                break;
+
+                            case 3:
+                                AddValuesToList(waistBlendshapeValues, waistBlendshapeValuePairs);
+                                break;
+
+                            case 4:
+                                AddValuesToList(legsBlendshapeValues, legsBlendshapeValuePairs);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // Send the blendshape data to the server, using only the relevant region's values
+                        (float[] shapeValues, int[] shapeIDs) = ConvertBlendshapeListToArrays(originalRegionID switch
+                        {
+                            0 => headBlendshapeValuePairs,
+                            1 => chestBlendshapeValuePairs,
+                            2 => armsBlendshapeValuePairs,
+                            3 => waistBlendshapeValuePairs,
+                            4 => legsBlendshapeValuePairs,
+                            _ => new List<BlendshapeValuePair>()
+                        });
+
+                        SetBlendshapeNetworkVarServerRpc(originalRegionID, shapeValues, shapeIDs);
+                    }
+                }
+            }
+        }
+
+        private (float[] shapeValues, int[] shapeIDs) ConvertBlendshapeListToArrays(List<BlendshapeValuePair> blendshapeList)
+        {
+            int count = blendshapeList.Count;
+            float[] shapeValues = new float[count];
+            int[] shapeIDs = new int[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                shapeValues[i] = blendshapeList[i].ShapeValue;
+                shapeIDs[i] = blendshapeList[i].ShapeID;
+            }
+
+            return (shapeValues, shapeIDs);
+        }
+
         [ServerRpc(RequireOwnership = false)]
         public void SetBlendshapeNetworkVarServerRpc(int id, float[] shapeValues, int[] shapeIDs)
         {
-            FemmployeeModBase.mls.LogWarning($"debugging ShapeValues for regionID {id}");
-            foreach (var value in shapeValues)
-            {
-                FemmployeeModBase.mls.LogWarning($"{value}");
-            }
-            FemmployeeModBase.mls.LogWarning($" ");
-            FemmployeeModBase.mls.LogWarning($"debugging shapeIDs for regionID {id}");
-            foreach (var shapeID in shapeIDs)
-            {
-                FemmployeeModBase.mls.LogWarning($"{shapeID}");
-            }
-            FemmployeeModBase.mls.LogWarning($" ");
-            FemmployeeModBase.mls.LogWarning($" ");
-            FemmployeeModBase.mls.LogWarning($"|||||| NEW LINE |||||||");
-            FemmployeeModBase.mls.LogWarning($" ");
-            FemmployeeModBase.mls.LogWarning($" ");
-
-            void ClearList(NetworkList<BlendshapeValuePair> list)
-            {
-                while (list.Count > 0)
-                {
-                    list.RemoveAt(0);
-                }
-            }
-
             void AddValuesToList(NetworkList<BlendshapeValuePair> list, float[] values, int[] ids)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
-                    list.Add(new BlendshapeValuePair(values[i], ids[i]));
+                    bool shapeExists = false;
+
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        if (list[j].ShapeID == ids[i])
+                        {
+                            // If shape exists, overwrite its value
+                            list[j] = new BlendshapeValuePair(values[i], ids[i]);
+                            shapeExists = true;
+                            break;
+                        } 
+                    }
+
+                    // If shape does not exist, add the new value pair
+                    if (!shapeExists)
+                    {
+                        list.Add(new BlendshapeValuePair(values[i], ids[i]));
+                    }
                 }
             }
 
-            // Clear and add values for the specific region's networked list
+            // Update values for the specific region's networked list
             switch (id)
             {
                 case 0:
-                    ClearList(headBlendshapeValues);
                     AddValuesToList(headBlendshapeValues, shapeValues, shapeIDs);
                     break;
 
                 case 1:
-                    ClearList(chestBlendshapeValues);
                     AddValuesToList(chestBlendshapeValues, shapeValues, shapeIDs);
                     break;
 
                 case 2:
-                    ClearList(armsBlendshapeValues);
                     AddValuesToList(armsBlendshapeValues, shapeValues, shapeIDs);
                     break;
 
                 case 3:
-                    ClearList(waistBlendshapeValues);
                     AddValuesToList(waistBlendshapeValues, shapeValues, shapeIDs);
                     break;
 
                 case 4:
-                    ClearList(legsBlendshapeValues);
                     AddValuesToList(legsBlendshapeValues, shapeValues, shapeIDs);
                     break;
             }
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void ResetBlendshapeNetworkVarServerRPC(int TargetList)
+        {
+            ResetBlendshapeNetworkVar(TargetList);
+        }
+
+        public void ResetBlendshapeNetworkVar(int targetList)
+        {
+            // Ensure settings and networkedSettings are not null
+            if (settings?.networkedSettings == null)
+            {
+                Debug.LogError("Settings or networkedSettings are null");
+                return;
+            }
+
+            // Create a list of NetworkList<BlendshapeValuePair> from various blendshape values in networkedSettings
+            List<NetworkList<BlendshapeValuePair>> blendshapeLists = new List<NetworkList<BlendshapeValuePair>>
+            {
+                settings.networkedSettings.headBlendshapeValues,
+                settings.networkedSettings.chestBlendshapeValues,
+                settings.networkedSettings.armsBlendshapeValues,
+                settings.networkedSettings.waistBlendshapeValues,
+                settings.networkedSettings.legsBlendshapeValues
+            };
+
+            // Ensure the targetList index is within bounds
+            if (targetList < 0 || targetList >= blendshapeLists.Count)
+            {
+                Debug.LogError($"Invalid targetList index: {targetList}");
+                return;
+            }
+
+            // Clear the list located at the index of targetList
+            blendshapeLists[targetList].Clear();
+        }
 
         [ServerRpc(RequireOwnership = false)]
         public void SetMaterialDataServerRpc(Color suitColorValue, float suitMetallicValue, float suitSmoothnessValue, Color skinColorValue, float skinMetallicValue, float skinSmoothnessValue)
@@ -290,11 +444,11 @@ namespace FemmployeeMod
 
         public void SaveSuitData()
         {
-            List<FemmployeeUIWorker>[] regionSliderLists = new List<FemmployeeUIWorker>[5];
+            List<BlendshapeSlider>[] regionSliderLists = new List<BlendshapeSlider>[5];
 
             for (int i = 0; i < 5; i++)
             {
-                regionSliderLists[i] = new List<FemmployeeUIWorker>();
+                regionSliderLists[i] = new List<BlendshapeSlider>();
 
                 foreach (var sliderGroup in localUI.AllSliders[i])
                 {

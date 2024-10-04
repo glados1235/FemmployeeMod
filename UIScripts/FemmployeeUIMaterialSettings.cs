@@ -6,7 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FemmployeeMod
+namespace FemmployeeMod.UIScripts
 {
     public class FemmployeeUIMaterialSettings : MonoBehaviour
     {

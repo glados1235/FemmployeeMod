@@ -11,7 +11,7 @@ using LethalCompanyInputUtils.Api;
 using FemmployeeMod;
 using System.IO;
 
-namespace ModelReplacement
+namespace ModelReplacement 
 {
     [BepInPlugin("com.TiltedHat.FemmployeeMod", "Femmployee Mod", "1.0.2")]
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]

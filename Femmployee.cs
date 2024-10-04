@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Drawing;
 using static UnityEngine.ParticleSystem.PlaybackState;
+using FemmployeeMod.UIScripts;
 
 namespace ModelReplacement
 {
@@ -18,20 +19,21 @@ namespace ModelReplacement
     {
         public FemmployeeSettings settings;
         public FemmployeeConfigUI localModdedUI;
+        public FemmployeeViewmodel localViewModel;
 
-        protected override GameObject LoadAssetsAndReturnModel()
+        public override GameObject LoadAssetsAndReturnModel()
         {
             string model_name = "Femmployee";
             return Assets.MainAssetBundle.LoadAsset<GameObject>(model_name);
         }
 
-        protected override void Awake()
+        public override void Awake()
         {
             base.Awake();
 
         }
 
-        protected override void OnDestroy()
+        public override void OnDestroy()
         {
             base.OnDestroy();
             if (Tools.CheckIsServer())
@@ -41,7 +43,7 @@ namespace ModelReplacement
 
         }
 
-        protected override void Start()
+        public override void Start()
         {
             settings = replacementModel.GetComponent<FemmployeeSettings>();
             settings.controller = controller;
@@ -137,8 +139,24 @@ namespace ModelReplacement
             for (int i = 0; i < settings.bodyRegionMeshRenderers.Length; i++)
             {
                 settings.bodyRegionMeshRenderers[i].sharedMesh = settings.partsList[i][GetSyncValue(i)].mesh;
+
                 settings.bodyRegionMeshRenderers[i].materials = settings.partsList[i][GetSyncValue(i)].materials;
             }
+            if (controller != GameNetworkManager.Instance.localPlayerController) { return; }
+            ApplyLocalViewmodel();
+        }
+
+        private void ApplyLocalViewmodel()
+        {
+            FemmployeeSettings viewmodelSettings = replacementViewModel.GetComponent<FemmployeeSettings>();
+            viewmodelSettings.bodyRegionMeshRenderers[2].sharedMesh = settings.partsList[2][GetSyncValue(2)].mesh;
+            viewmodelSettings.bodyRegionMeshRenderers[2].materials = settings.partsList[2][GetSyncValue(2)].materials;
+            Destroy(replacementViewModel);
+            replacementViewModel = LoadViewModelreplacement();
+            viewModelAvatar.AssignViewModelReplacement(controller.gameObject, replacementViewModel);
+            SetAvatarRenderers(true);
+            viewState.ReportBodyReplacementAddition(this);
+            cosmeticManager.ReportBodyReplacementAddition(this);
         }
 
         private string GetSyncValue(int index)
@@ -173,6 +191,29 @@ namespace ModelReplacement
                         material.SetFloat("_Metallic", settings.networkedSettings.skinMaterialValues.Value.metallicValue);
                         material.SetFloat("_Smoothness", settings.networkedSettings.skinMaterialValues.Value.smoothnessValue);
                     }
+                }
+            }
+            if (controller != GameNetworkManager.Instance.localPlayerController) { return; }
+            ApplyViewmodelMaterialProperties();
+        }
+
+        private void ApplyViewmodelMaterialProperties()
+        {
+            FemmployeeSettings viewmodelSettings = replacementViewModel.GetComponent<FemmployeeSettings>();
+            foreach (var material in viewmodelSettings.bodyRegionMeshRenderers[2].materials)
+            {
+                if (material.name == "Suit (Instance)")
+                {
+                    material.color = settings.networkedSettings.suitMaterialValues.Value.colorValue;
+                    material.SetFloat("_Metallic", settings.networkedSettings.suitMaterialValues.Value.metallicValue);
+                    material.SetFloat("_Smoothness", settings.networkedSettings.suitMaterialValues.Value.smoothnessValue);
+                }
+
+                if (material.name == "Skin (Instance)")
+                {
+                    material.color = settings.networkedSettings.skinMaterialValues.Value.colorValue;
+                    material.SetFloat("_Metallic", settings.networkedSettings.skinMaterialValues.Value.metallicValue);
+                    material.SetFloat("_Smoothness", settings.networkedSettings.skinMaterialValues.Value.smoothnessValue);
                 }
             }
         }

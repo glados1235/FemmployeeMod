@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 279561682
+CRC: 3884279786
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e4d0822aa25b9226247531a90db645a1
+    Hash: 966ff4016dc001584998b9adbfb2ed3e
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 238f0d24bb1dc6d03b5a106784bbed58
+    Hash: 90046bb2d27444114180fbf13641dfc9
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e4d0822aa25b9226247531a90db645a1
+    Hash: 966ff4016dc001584998b9adbfb2ed3e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -39,35 +39,19 @@ ClassTypes:
 - Class: 108
   Script: {instanceID: 0}
 - Class: 114
+  Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
-- Class: 114
-  Script: {fileID: -968822544, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
-- Class: 114
-  Script: {fileID: -146029955, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
-- Class: 114
-  Script: {fileID: -789696042, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
-- Class: 114
-  Script: {fileID: -1491426481, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
-- Class: 114
-  Script: {fileID: 752590947, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
-- Class: 114
-  Script: {fileID: 1448383285, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
-- Class: 114
-  Script: {fileID: 692046811, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
-- Class: 114
-  Script: {fileID: -668211948, guid: b92aa4bbef5f07343b2a4d8d2f1579ce, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
 - Class: 114
@@ -94,6 +78,28 @@ ClassTypes:
   Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 7642d36ef7666214a86474ac3d555621, type: 3}
+- Class: 114
+  Script: {fileID: -1094410218, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: 2106641260, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: -146029955, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: -789696042, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: -1491426481, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: 752590947, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: -1835163221, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: -589231860, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: 1354043078, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: -668211948, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
+- Class: 114
+  Script: {fileID: -122032861, guid: fd58ff54c7737224fabefe6314a27ddc, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -204,15 +210,14 @@ Assets:
 - Assets/ProjectAssets/FemmployeeParts/Default Helmet.asset
 - Assets/ProjectAssets/FemmployeeParts/Legs Alien.asset
 - Assets/ProjectAssets/FemmployeeParts/Helmet Hooded.asset
-- Assets/ProjectAssets/FemmployeePartsInitializationList.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/export202402131804098592.psd_0000_cog.png
+- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_legs-outline.png
 - Assets/ProjectAssets/FemmployeeParts/Legs Alien Bare.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/export202402131804098592.psd_0007_far-arm.png
 - Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/Quota Dance.anim
 - Assets/ProjectAssets/FemmployeeParts/Legs Bare.asset
 - Assets/ProjectAssets/Models/mats/Suit.mat
 - Assets/ProjectAssets/ModdedUI/Perfect DOS VGA 437.ttf
-- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_legs-outline.png
 - Assets/ProjectAssets/ModdedUI/SliderBodyGradient.png
 - Assets/ProjectAssets/FemmployeeParts/Arms Alien.asset
 - Assets/ProjectAssets/FemmployeeParts/Helmet Packless.asset
@@ -259,6 +264,7 @@ Assets:
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_waist-fill.png
 - Assets/ProjectAssets/Models/mats/Steel.mat
 - Assets/ProjectAssets/FemmployeeParts/Torso Cutoff.asset
+- Assets/ProjectAssets/FemmployeePartsInitializationList.asset
 - Assets/ProjectAssets/FemmployeeParts/Helmet Alien.asset
 - Assets/ProjectAssets/ModdedUI/UIFoldoutClosed.png
 - Assets/ProjectAssets/FemmployeeParts/Hips Skirt Med.asset

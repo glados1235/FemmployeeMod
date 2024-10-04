@@ -1,4 +1,5 @@
-﻿using ModelReplacement;
+﻿using FemmployeeMod.UIScripts;
+using ModelReplacement;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -28,7 +29,7 @@ namespace FemmployeeMod
             return false;
         }
 
-        public static Dictionary<string, float> RetriveSliderData(List<FemmployeeUIWorker> sliders)
+        public static Dictionary<string, float> RetriveSliderData(List<BlendshapeSlider> sliders)
         {
             Dictionary<string, float> keyValuePairs = new Dictionary<string, float>();
             foreach (var slider in sliders)
