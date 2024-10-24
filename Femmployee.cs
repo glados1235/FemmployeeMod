@@ -20,7 +20,7 @@ namespace ModelReplacement
         public FemmployeeSettings settings;
         public FemmployeeConfigUI localModdedUI;
         public FemmployeeViewmodel localViewModel;
-
+        
         public override GameObject LoadAssetsAndReturnModel()
         {
             string model_name = "Femmployee";
@@ -72,7 +72,7 @@ namespace ModelReplacement
         {
             yield return new WaitUntil(() => settings.networkedSettings != null);
             yield return new WaitUntil(() => settings.networkedSettings.hasInitialized.Value == true); 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.2f);
             localModdedUI.femmployeeSuitPreview.LoadSaveData(this);
         }
 
@@ -142,6 +142,7 @@ namespace ModelReplacement
 
                 settings.bodyRegionMeshRenderers[i].materials = settings.partsList[i][GetSyncValue(i)].materials;
             }
+            if (!ModelReplacementAPI.EnforceViewModelGeneration.Value) { FemmployeeModBase.mls.LogWarning("'Generate Viewmodels by default' is disabled! Skipping viewmodel generation"); return; }
             if (controller != GameNetworkManager.Instance.localPlayerController) { return; }
             ApplyLocalViewmodel();
         }
@@ -151,6 +152,7 @@ namespace ModelReplacement
             FemmployeeSettings viewmodelSettings = replacementViewModel.GetComponent<FemmployeeSettings>();
             viewmodelSettings.bodyRegionMeshRenderers[2].sharedMesh = settings.partsList[2][GetSyncValue(2)].mesh;
             viewmodelSettings.bodyRegionMeshRenderers[2].materials = settings.partsList[2][GetSyncValue(2)].materials;
+
             Destroy(replacementViewModel);
             replacementViewModel = LoadViewModelreplacement();
             viewModelAvatar.AssignViewModelReplacement(controller.gameObject, replacementViewModel);
@@ -193,6 +195,7 @@ namespace ModelReplacement
                     }
                 }
             }
+            if (!ModelReplacementAPI.EnforceViewModelGeneration.Value) { return; }
             if (controller != GameNetworkManager.Instance.localPlayerController) { return; }
             ApplyViewmodelMaterialProperties();
         }

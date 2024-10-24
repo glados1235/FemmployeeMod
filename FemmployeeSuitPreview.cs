@@ -22,7 +22,7 @@ namespace FemmployeeMod
 
         public void Update()
         {
-            float spinValue = previewSpinSlider.value;
+            float spinValue = previewSpinSlider.value; 
             Quaternion targetRotation = Quaternion.Euler(0f, spinValue, 0f);
 
             previewModel.transform.rotation = targetRotation;

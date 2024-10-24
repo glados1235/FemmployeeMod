@@ -82,6 +82,7 @@ namespace FemmployeeMod.UIScripts
                     else { regionDropdown.GetComponent<RegionDropdown>().targetElement.SetActive(true); }
                 }
             }
+
         }
 
         // Clear and repopulate the dropdown options
@@ -237,6 +238,7 @@ namespace FemmployeeMod.UIScripts
                 menuRoot.SetActive(isUIOpen);
                 mainMenu.SetActive(isUIOpen);
                 settingsMenu.SetActive(false);
+                femmployeeSuitPreview.modelViewCamera.gameObject.SetActive(isUIOpen);
 
                 Cursor.lockState = isUIOpen ? CursorLockMode.None : CursorLockMode.Locked;
                 Cursor.visible = isUIOpen;

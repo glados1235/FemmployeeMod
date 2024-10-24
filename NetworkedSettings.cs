@@ -90,8 +90,18 @@ namespace FemmployeeMod
             if (Tools.CheckIsServer()) 
             { 
                 playerID.Value = -1;
-                suitMaterialValues.Value = new NetworkMaterialProperties();
-                skinMaterialValues.Value = new NetworkMaterialProperties();
+
+                NetworkMaterialProperties initalSuitMaterialValues = new NetworkMaterialProperties();
+                initalSuitMaterialValues.colorValue = FemmployeeConfigUI.instance.suitMaterialSettings.defaultColorValue;
+                initalSuitMaterialValues.metallicValue = FemmployeeConfigUI.instance.suitMaterialSettings.defaultMetallicValue;
+                initalSuitMaterialValues.smoothnessValue = FemmployeeConfigUI.instance.suitMaterialSettings.defaultSmoothnessValue;
+                suitMaterialValues.Value = initalSuitMaterialValues;
+
+                NetworkMaterialProperties initalSkinMaterialValues = new NetworkMaterialProperties();
+                initalSkinMaterialValues.colorValue = FemmployeeConfigUI.instance.skinMaterialSettings.defaultColorValue;
+                initalSkinMaterialValues.metallicValue = FemmployeeConfigUI.instance.skinMaterialSettings.defaultMetallicValue;
+                initalSkinMaterialValues.smoothnessValue = FemmployeeConfigUI.instance.skinMaterialSettings.defaultSmoothnessValue;
+                skinMaterialValues.Value = initalSkinMaterialValues;
             }
             StartCoroutine(waitForIDSync());
         }
@@ -134,7 +144,7 @@ namespace FemmployeeMod
             {
                 LoadSuitData(SuitDataParser(File.ReadAllText(FemmployeeModBase.saveFilePath)));
             }
-            else { FemmployeeModBase.mls.LogWarning("Suit data file not found."); }
+            else { FemmployeeModBase.mls.LogWarning("Suit data file not found! A new file will be generated next time you apply suit settings."); }
 
             StartCoroutine(waitToAssign());
         }

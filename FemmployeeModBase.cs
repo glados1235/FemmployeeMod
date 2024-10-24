@@ -13,7 +13,7 @@ using System.IO;
 
 namespace ModelReplacement 
 {
-    [BepInPlugin("com.TiltedHat.FemmployeeMod", "Femmployee Mod", "1.0.2")]
+    [BepInPlugin("com.TiltedHat.FemmployeeMod", "Femmployee Mod", "1.1.6")] 
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("x753.More_Suits", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.rune580.LethalCompanyInputUtils", BepInDependency.DependencyFlags.HardDependency)]
