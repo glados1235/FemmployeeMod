@@ -28,7 +28,7 @@ namespace FemmployeeMod
             previewModel.transform.rotation = targetRotation;
         }
 
-        public void LoadSaveData(Femmployee playerFemmployee)
+        public void PreviewLoadSaveData(Femmployee playerFemmployee)
         {
             settings.bodyRegionMeshRenderers[0].sharedMesh = playerFemmployee.settings.partsList[0][playerFemmployee.settings.networkedSettings.headSync].mesh;
             settings.bodyRegionMeshRenderers[0].materials = playerFemmployee.settings.partsList[0][playerFemmployee.settings.networkedSettings.headSync].materials;

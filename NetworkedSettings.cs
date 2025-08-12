@@ -84,9 +84,13 @@ namespace FemmployeeMod
 
         public FemmployeeConfigUI localUI;
 
+        private bool _networkListsCreatedByThis = false;
+
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+
             if (Tools.CheckIsServer()) 
             { 
                 playerID.Value = -1;
@@ -391,7 +395,7 @@ namespace FemmployeeMod
 
         [ServerRpc(RequireOwnership = false)]
         public void ResetBlendshapeNetworkVarServerRPC(int TargetList)
-        {
+        { 
             ResetBlendshapeNetworkVar(TargetList);
         }
 
@@ -611,6 +615,29 @@ namespace FemmployeeMod
         {
             this.GetComponent<NetworkObject>().Despawn(true);
         }
+
+        public override void OnDestroy()
+        {
+            // Dispose only lists that we created manually to avoid double-dispose
+            if (_networkListsCreatedByThis)
+            {
+                try
+                {
+                    headBlendshapeValues?.Dispose();
+                    chestBlendshapeValues?.Dispose();
+                    armsBlendshapeValues?.Dispose();
+                    waistBlendshapeValues?.Dispose();
+                    legsBlendshapeValues?.Dispose();
+                }
+                catch (Exception ex)
+                { 
+                    Debug.LogWarning($"Error disposing network lists: {ex}");  
+                }
+            }
+
+            base.OnDestroy(); // important to let Netcode do its cleanup
+        }
+
 
     }
 }

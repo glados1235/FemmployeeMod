@@ -17,6 +17,7 @@ namespace ModelReplacement
 {
     public class Femmployee : BodyReplacementBase
     {
+
         public FemmployeeSettings settings;
         public FemmployeeConfigUI localModdedUI;
         public FemmployeeViewmodel localViewModel;
@@ -24,7 +25,7 @@ namespace ModelReplacement
         public override GameObject LoadAssetsAndReturnModel()
         {
             string model_name = "Femmployee";
-            return Assets.MainAssetBundle.LoadAsset<GameObject>(model_name);
+            return Assets.MainAssetBundle.LoadAsset<GameObject>(model_name); 
         }
 
         public override void Awake()
@@ -73,7 +74,7 @@ namespace ModelReplacement
             yield return new WaitUntil(() => settings.networkedSettings != null);
             yield return new WaitUntil(() => settings.networkedSettings.hasInitialized.Value == true); 
             yield return new WaitForSeconds(0.2f);
-            localModdedUI.femmployeeSuitPreview.LoadSaveData(this);
+            localModdedUI.femmployeeSuitPreview.PreviewLoadSaveData(this);
         }
 
         private void InitializeParts()

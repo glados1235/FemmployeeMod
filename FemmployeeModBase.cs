@@ -58,9 +58,9 @@ namespace ModelReplacement
                     }
                 }
             }
-
+             
             Assets.PopulateAssets();
-            ModelReplacementAPI.RegisterSuitModelReplacement("Femmployee", typeof(Femmployee));
+            ModelReplacementAPI.RegisterSuitModelReplacement("Femmployee", typeof(Femmployee)); 
             Harmony harmony = new Harmony("com.TiltedHat.FemmployeeMod");
             harmony.PatchAll();
             Logger.LogInfo($"Plugin {"com.TiltedHat.FemmployeeMod"} is loaded!");

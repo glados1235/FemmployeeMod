@@ -193,6 +193,12 @@ namespace FemmployeeMod.UIScripts
                 slider.configUI = this;
                 slider.blendshapes = group.Value.ToArray();
                 slider.objectID = sender.objectID;
+
+                FemmployeeModBase.mls.LogInfo($"slider {slider.shapeSlider}");
+
+                FemmployeeModBase.mls.LogInfo($"slider.shapeSlider.maxValue {slider.shapeSlider.maxValue}"); 
+                FemmployeeModBase.mls.LogInfo($"slider.DefaultSliderMax {slider.DefaultSliderMax}");
+                FemmployeeModBase.mls.LogInfo($"sliderMultiplier {sliderMultiplier}");
                 slider.shapeSlider.maxValue = slider.DefaultSliderMax * sliderMultiplier;
 
                 // Find the index of the first blendshape in the group

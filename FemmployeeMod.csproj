@@ -17,6 +17,15 @@
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
   </PropertyGroup>
   
+  <!-- Set NuGet Sources -->  
+    <PropertyGroup>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.windows10ce.com/nuget/v3/index.json
+        </RestoreAdditionalProjectSources>
+    </PropertyGroup>
+  
   <PropertyGroup>
     <ReferencePath>$(ReferencePath);$(LethalCompanyPath)\Lethal Company_Data\Managed</ReferencePath>
     <ReferencePath>$(ReferencePath);$(LethalCompanyPath)\Lethal Company_Data\Plugins</ReferencePath>
@@ -37,40 +46,28 @@
   
   <ItemGroup>
     <!-- Unity -->
-    <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" PrivateAssets="all"/>
+    <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" PrivateAssets="all" />
     
     <!-- BepInEx -->
-    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
-    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all"/>
-    <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all"/>
-    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" PrivateAssets="all"/>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" PrivateAssets="all" />
+    
     
     <!-- Lethal Company -->
-    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true" PrivateAssets="all"/>
+    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true" PrivateAssets="all" />
 
     <!-- Other Mod Dependencies -->
-    <PackageReference Include="Evaisa.LethalLib" Version="0.15.*" />
+    <PackageReference Include="Evaisa.LethalLib" Publicize="true" Version="1.*" />
+    <PackageReference Include="Rune580-LethalCompany_InputUtils" Publicize="true" Version="0.7.10" />
+    <PackageReference Include="BunyaPineTree-ModelReplacementAPI" Publicize="true" Version="2.4.19" />
+    <PackageReference Include="x753-More_Suits" Publicize="true" Version="1.5.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="LethalCompanyInputUtils">
-      <HintPath>LethalCompanyInputUtils.dll</HintPath>
-    </Reference>
-    <Reference Include="ModelReplacementAPI">
-      <HintPath>ModelReplacementAPI.dll</HintPath>
-    </Reference>
-    
-    <Reference Publicize ="true" Include="ModelReplacementAPI"><HintPath>ModelReplacementAPI.dll</HintPath></Reference>
-   
-     <Reference Include="MoreSuits">
-      <HintPath>MoreSuits.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  
 
 
   <Target Name="NetcodePatcher" AfterTargets="Build">
     <Exec Command="netcode-patch &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
-    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(LethalCompanyPath)\BepInEx\plugins\TiltedTomb-The_Femmployee_Mod&quot;  &#xD;&#xA;" />
+    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(LethalCompanyPath)\BepInEx\plugins\TiltedTomb-The_Femmployee_Mod\FemmployeeMod.dll&quot;  &#xD;&#xA;" />
   </Target>
-</Project>
+</Project> 

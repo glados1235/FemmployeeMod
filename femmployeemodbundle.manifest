@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3236312420
+CRC: 2339450483
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6ba02cac9183132dcb61eaeea52a0532
+    Hash: d0589edc9601fa9be58bba2c5ca9c074
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 90046bb2d27444114180fbf13641dfc9
+    Hash: 4b217826d43caca932733f416fc6f9b7
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 6ba02cac9183132dcb61eaeea52a0532
+    Hash: d0589edc9601fa9be58bba2c5ca9c074
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -41,13 +41,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
 - Class: 114
@@ -194,89 +194,89 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.Toggle/ToggleEvent
 Assets:
+- Assets/ProjectAssets/FemmployeeParts/Helmet Packless.asset
 - Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/PreviewIdle.anim
-- Assets/ProjectAssets/ModdedUI/SliderBodyRainbowGradient.png
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_slider-fill.png
-- Assets/ProjectAssets/FemmployeeParts/Helmet Magical.asset
-- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_torso-outline.png
-- Assets/ProjectAssets/Models/mats/Silver.mat
+- Assets/ModelReplacementSDK/AssetsToBuild/Femmployee.prefab
+- Assets/ProjectAssets/FemmployeeParts/Helmet Alien.asset
+- Assets/ProjectAssets/FemmployeeParts/Default Torso.asset
+- Assets/ProjectAssets/FemmployeeParts/Legs Bare.asset
+- Assets/ProjectAssets/FemmployeeParts/Legs Thighboots.asset
+- Assets/ProjectAssets/FemmployeeParts/Torso Unzipped.asset
+- Assets/ProjectAssets/ModdedUI/SliderBodyRainbowGradient.png
 - Assets/ProjectAssets/Models/TheFemmployee.fbx
-- Assets/ProjectAssets/NetworkedSettings.prefab
+- Assets/ProjectAssets/FemmployeeParts/Hips Scarf.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_helmet-fill.png
-- Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/BackDrop.mat
+- Assets/ProjectAssets/Models/mats/Silver.mat
+- Assets/ProjectAssets/FemmployeeParts/Default Hips.asset
+- Assets/ProjectAssets/FemmployeeParts/Helmet Backpack.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_arm-fill.png
-- Assets/ProjectAssets/FemmployeeParts/Helmet Demon.asset
+- Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/BackDrop.mat
 - Assets/ProjectAssets/Models/mats/Rubber.mat
-- Assets/ProjectAssets/FemmployeeParts/Default Helmet.asset
-- Assets/ProjectAssets/FemmployeeParts/Legs Alien.asset
-- Assets/ProjectAssets/FemmployeeParts/Helmet Hooded.asset
+- Assets/ProjectAssets/NetworkedSettings.prefab
+- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_helmet-outline.png
+- Assets/ProjectAssets/FemmployeeParts/Hips Skirt Med.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/export202402131804098592.psd_0000_cog.png
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_legs-outline.png
-- Assets/ProjectAssets/FemmployeeParts/Legs Alien Bare.asset
+- Assets/ProjectAssets/FemmployeeParts/Helmet Hooded.asset
 - Assets/ProjectAssets/ModdedUI/UIElements/export202402131804098592.psd_0007_far-arm.png
 - Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/Quota Dance.anim
-- Assets/ProjectAssets/FemmployeeParts/Legs Bare.asset
-- Assets/ProjectAssets/Models/mats/Suit.mat
 - Assets/ProjectAssets/ModdedUI/Perfect DOS VGA 437.ttf
+- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_torso-outline.png
+- Assets/ProjectAssets/Models/mats/Suit.mat
+- Assets/ProjectAssets/FemmployeeParts/Helmet Bowler.asset
+- Assets/ProjectAssets/FemmployeeParts/Default Legs.asset
 - Assets/ProjectAssets/ModdedUI/SliderBodyGradient.png
-- Assets/ProjectAssets/FemmployeeParts/Arms Alien.asset
-- Assets/ProjectAssets/FemmployeeParts/Helmet Packless.asset
+- Assets/ProjectAssets/FemmployeeParts/Hips Skirt Short.asset
+- Assets/ProjectAssets/FemmployeeParts/Helmet Hooded Dark.asset
+- Assets/ProjectAssets/FemmployeeParts/Default Arms.asset
 - Assets/ProjectAssets/Models/mats/BLACK.mat
-- Assets/ProjectAssets/Models/mats/Iron.mat
+- Assets/ProjectAssets/FemmployeeParts/Arms Aliengloves.asset
 - Assets/ProjectAssets/ModdedUI/MenuSprite.png
 - Assets/ProjectAssets/ModdedUI/UIElements/UIElements_arm-outline.png
-- Assets/ProjectAssets/FemmployeeParts/Helmet Backpack.asset
-- Assets/ProjectAssets/FemmployeeParts/Legs Thighboots.asset
-- Assets/ProjectAssets/FemmployeeParts/Default Hips.asset
-- Assets/ProjectAssets/FemmployeeParts/Arms Aliengloves.asset
-- Assets/ProjectAssets/FemmployeeParts/Default Torso.asset
-- Assets/ProjectAssets/FemmployeeParts/Default Legs.asset
 - Assets/ProjectAssets/ModdedUI/Perfect DOS VGA 437 SDF.asset
-- Assets/ProjectAssets/FemmployeeParts/Helmet Bowler.asset
+- Assets/ProjectAssets/Models/mats/Iron.mat
 - Assets/ProjectAssets/ModdedUI/SliderBody.png
-- Assets/ProjectAssets/ModdedUI/PlayerPreviewRT.renderTexture
-- Assets/ProjectAssets/ModdedUI/UIElements/FullSprite.png
-- Assets/ProjectAssets/Models/mats/Tubes.mat
-- Assets/ProjectAssets/FemmployeeParts/Helmet Gas.asset
-- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_waist-outline.png
-- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_slider-outline.png
 - Assets/ProjectAssets/FemmployeeParts/Hips Underwear.asset
-- Assets/ProjectAssets/Models/mats/Leather.mat
+- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_waist-outline.png
+- Assets/ProjectAssets/ModdedUI/PlayerPreviewRT.renderTexture
+- Assets/ProjectAssets/FemmployeeParts/Legs Alien.asset
+- Assets/ProjectAssets/Models/mats/Tubes.mat
+- Assets/ProjectAssets/ModdedUI/UIElements/FullSprite.png
+- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_slider-outline.png
 - Assets/ProjectAssets/Models/mats/Yello.mat
-- Assets/ProjectAssets/FemmployeeParts/Default Arms.asset
-- Assets/ProjectAssets/ModdedUI/RGBSliders.png
-- Assets/ModelReplacementSDK/AssetsToBuild/Femmployee.prefab
-- Assets/ProjectAssets/FemmployeeParts/Hips Skirt Short.asset
-- Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/playerPreviewController.controller
+- Assets/ProjectAssets/FemmployeeParts/Torso Cutoff.asset
+- Assets/ProjectAssets/FemmployeeParts/Helmet Gas.asset
+- Assets/ProjectAssets/Models/mats/Leather.mat
+- Assets/ProjectAssets/FemmployeeParts/Arms Alien.asset
 - Assets/ProjectAssets/FemmployeeParts/Hips Shorts.asset
-- Assets/ProjectAssets/FemmployeeParts/Legs Thighboots Bare.asset
-- Assets/ProjectAssets/FemmployeeParts/Arms Cutoff.asset
-- Assets/ProjectAssets/FemmployeeParts/Torso Unzipped.asset
+- Assets/ProjectAssets/ModdedUI/RGBSliders.png
+- Assets/ProjectAssets/FemmployeeParts/Helmet Dark.asset
+- Assets/ProjectAssets/FemmployeeParts/Helmet Demon.asset
+- Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/playerPreviewController.controller
 - Assets/ProjectAssets/ModdedUI/BlendshapeSlider.prefab
 - Assets/ProjectAssets/ModdedUI/New Material.mat
+- Assets/ProjectAssets/FemmployeeParts/Legs Alien Bare.asset
 - Assets/ProjectAssets/Models/mats/Skin.mat
 - Assets/ProjectAssets/ModdedUI/RainbowSliderTexture.png
-- Assets/ProjectAssets/ModdedUI/RegionHeadder.prefab
-- Assets/ProjectAssets/FemmployeeParts/Arms Longgloves.asset
-- Assets/ProjectAssets/FemmployeeParts/Hips Scarf.asset
-- Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_torso-fill.png
-- Assets/ProjectAssets/FemmployeeParts/Helmet Dark.asset
-- Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_waist-fill.png
-- Assets/ProjectAssets/Models/mats/Steel.mat
-- Assets/ProjectAssets/FemmployeeParts/Torso Cutoff.asset
 - Assets/ProjectAssets/FemmployeePartsInitializationList.asset
-- Assets/ProjectAssets/FemmployeeParts/Helmet Alien.asset
+- Assets/ProjectAssets/FemmployeeParts/Helmet Magical.asset
+- Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_waist-fill.png
+- Assets/ProjectAssets/ModdedUI/RegionHeadder.prefab
+- Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_torso-fill.png
+- Assets/ProjectAssets/Models/mats/Steel.mat
+- Assets/ProjectAssets/FemmployeeParts/Torso Scarf.asset
 - Assets/ProjectAssets/ModdedUI/UIFoldoutClosed.png
-- Assets/ProjectAssets/FemmployeeParts/Hips Skirt Med.asset
 - Assets/ProjectAssets/ModdedUI/ModdedUI.prefab
 - Assets/ProjectAssets/Models/mats/Bombox.mat
 - Assets/ProjectAssets/ModdedUI/UIElements/Fills/UIElements_legs-fill.png
-- Assets/ProjectAssets/FemmployeeParts/Torso Scarf.asset
+- Assets/ProjectAssets/FemmployeeParts/Arms Longgloves.asset
 - Assets/ProjectAssets/Models/mats/Hubber.mat
 - Assets/ProjectAssets/ModdedUI/SliderTest.png
 - Assets/ProjectAssets/ModdedUI/GraySliderBar.png
-- Assets/ProjectAssets/FemmployeeParts/Helmet Hooded Dark.asset
+- Assets/ProjectAssets/FemmployeeParts/Legs Thighboots Bare.asset
+- Assets/ProjectAssets/FemmployeeParts/Default Helmet.asset
 - Assets/ProjectAssets/ModdedUI/E5 5.png
-- Assets/ProjectAssets/ModdedUI/UIElements/UIElements_helmet-outline.png
+- Assets/ProjectAssets/FemmployeeParts/Arms Cutoff.asset
 - Assets/ProjectAssets/FemmployeeSuitPreviewPrefab/FemmployeeSuitPreviewPrefab.prefab
 Dependencies: []
